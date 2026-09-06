@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0284c7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="קרפאטוס 2026">
+  <meta name="description" content="קרפאטוס 2026 - מרכז מידע וניהול חופשה משפחתית חכם">
+  <title>קרפאטוס 2026 🇬🇷 | Smart Travel Hub</title>
+
+  <!-- Google Fonts with local fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS for Map (Graceful Fallback included if offline) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
+      --accent: #f59e0b;
+      --accent-light: #fef3c7;
+      --accent-dark: #b45309;
+      --turquoise: #06b6d4;
+      --success: #10b981;
+      --success-light: #dcfce7;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-hover: #f1f5f9;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 8px 22px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 14px 32px rgba(2, 132, 199, 0.18);
+      
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #090d16;
+      --card-bg: #131b2e;
+      --card-border: #1e293b;
+      --card-hover: #1a243a;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 95px;
+      overflow-x: hidden;
+    }
+
+    .app-container {
+      max-width: 520px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Mobile Install Guide Banner */
+    .install-hint-banner {
+      background: #0f172a;
+      color: #fff;
+      padding: 8px 14px;
+      font-size: 11.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      direction: rtl;
+    }
+    .install-hint-banner a {
+      color: #7dd3fc;
+      text-decoration: underline;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary-gradient);
+      color: #fff;
+      padding: 22px 18px 18px;
+      border-bottom-left-radius: var(--radius-lg);
+      border-bottom-right-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .header-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .header-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 700;
+      color: #e0f2fe;
+      width: fit-content;
+    }
+
+    .header-title {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    .weather-badge {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    /* Countdown Bar */
+    .countdown-card {
+      background: rgba(15, 23, 42, 0.32);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .countdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .countdown-digits-wrap {
+      display: flex;
+      gap: 6px;
+      direction: ltr;
+      justify-content: center;
+    }
+
+    .countdown-unit {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      padding: 4px 6px;
+      text-align: center;
+      min-width: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .countdown-num {
+      font-family: 'Outfit', -apple-system, sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fef08a;
+      line-height: 1.1;
+    }
+
+    .countdown-label {
+      font-size: 9px;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Trip Quick Status Bar */
+    .trip-pills-bar {
+      display: flex;
+      gap: 6px;
+      padding: 12px 16px 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .trip-pills-bar::-webkit-scrollbar { display: none; }
+
+    .status-pill {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-pill);
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: var(--shadow-sm);
+      color: var(--text-muted);
+    }
+    .status-pill strong {
+      color: var(--primary);
+    }
+
+    /* Tabs Bar */
+    .tabs-nav {
+      display: flex;
+      gap: 6px;
+      padding: 10px 16px 6px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg);
+    }
+    .tabs-nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 82px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 9px 8px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      text-align: center;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+    }
+
+    .tab-content {
+      display: none;
+      padding: 12px 16px;
+      animation: fadeIn 0.2s ease forwards;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .card-title {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Badges */
+    .badge {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+    .badge-hotel { background: var(--accent-light); color: var(--accent-dark); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-flight { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-kids { background: var(--success-light); color: #166534; border: 1px solid #bbf7d0; }
+    .badge-wind { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+
+    /* Data Rows */
+    .data-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--card-border);
+      font-size: 13px;
+    }
+    .data-row:last-of-type {
+      border-bottom: none;
+    }
+
+    .copy-chip {
+      background: var(--card-hover);
+      border: 1px solid var(--card-border);
+      padding: 3px 9px;
+      border-radius: 8px;
+      font-family: 'Outfit', monospace;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12.5px;
+      user-select: none;
+    }
+    .copy-chip:active {
+      transform: scale(0.95);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-outline { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); }
+    .btn-booking { background: #003580; color: #fff; }
+
+    /* Map Box & SVG Fallback */
+    .map-box {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--card-border);
+      margin-bottom: 14px;
+      background: #e2e8f0;
+      position: relative;
+    }
+    #map {
+      height: 280px;
+      width: 100%;
+      z-index: 10;
+    }
+
+    /* Offline/Direct Visual Map Alternative */
+    .offline-map-banner {
+      background: var(--card-bg);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--card-border);
+      margin-bottom: 14px;
+    }
+    .map-quick-links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .map-quick-link {
+      background: var(--card-hover);
+      border: 1px solid var(--card-border);
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-size: 11.5px;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 700;
+    }
+
+    /* Day Accordion */
+    .day-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .day-header {
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: var(--card-hover);
+    }
+    .day-card.open .day-header {
+      border-bottom: 1px solid var(--card-border);
+      background: var(--card-bg);
+    }
+    .day-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .day-content {
+      padding: 12px 14px;
+      display: none;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .day-card.open .day-content {
+      display: block;
+    }
+    .itinerary-step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .itinerary-time {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 12px;
+      min-width: 42px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Wind Advisor */
+    .wind-banner {
+      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+      border: 1px solid #7dd3fc;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+    [data-theme="dark"] .wind-banner {
+      background: linear-gradient(135deg, #0c2b48 0%, #083344 100%);
+      border-color: #0284c7;
+    }
+    .wind-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #0369a1;
+      margin-bottom: 4px;
+    }
+    [data-theme="dark"] .wind-title {
+      color: #7dd3fc;
+    }
+
+    /* Expenses */
+    .expense-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    input, select {
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      font-size: 13px;
+      background: var(--card-hover);
+      color: var(--text-main);
+      outline: none;
+    }
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--card-hover);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .expense-del-btn {
+      color: var(--danger);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      margin-right: 6px;
+    }
+
+    .settlement-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #166534;
+    }
+    [data-theme="dark"] .settlement-box {
+      background: #052e16;
+      border-color: #14532d;
+      color: #86efac;
+    }
+
+    /* Greek Phrases */
+    .phrase-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .phrase-card {
+      background: var(--card-hover);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 3px;
+    }
+    .phrase-gr {
+      font-weight: 800;
+      color: var(--primary);
+      font-size: 13.5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .phrase-heb {
+      font-size: 12px;
+      color: var(--text-main);
+    }
+    .speak-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* Checklist */
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--card-border);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+    .check-item.done span {
+      text-decoration: line-through;
+      color: var(--text-subtle);
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0f172a;
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: var(--radius-pill);
+      font-size: 12.5px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 99999;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Mobile Bottom Navigation */
+    .mobile-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 8px calc(env(safe-area-inset-bottom, 0px) + 8px);
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+      z-index: 1000;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .bar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+    }
+    .bar-item.active {
+      color: var(--primary);
+    }
+    .bar-item-icon {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- Mobile Installation Tip Banner -->
+    <div class="install-hint-banner" id="pwaBanner">
+      <span>📱 <strong>טיפ לנייד:</strong> לחצו על <strong>שתף / תפריט דפדפן</strong> וביחרו <strong>"הוסף למסך הבית"</strong> לקבלת אפליקציה מלאה!</span>
+      <span onclick="document.getElementById('pwaBanner').style.display='none'" style="cursor:pointer; padding-right:8px; font-weight:800;">✕</span>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="header-title-wrap">
+          <div class="header-tag">
+            <span>🇬🇷 11-14 בספטמבר 2026</span>
+          </div>
+          <h1 class="header-title">
+            <span>קרפאטוס</span>
+            <span style="font-family:'Outfit'; font-weight:400; opacity:0.9;">2026</span>
+          </h1>
+          <span style="font-size:12px; color:#e0f2fe; opacity:0.9;">6 נוסעים | משפחת קישון וסוציאנו</span>
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn" onclick="toggleTheme()" title="שנה מצב תצוגה" id="themeToggleBtn">🌙</button>
+          <div class="weather-badge" id="weatherWidget" onclick="fetchLiveWeather()" title="לחץ לרענון מזג אוויר">
+            <span id="weatherIcon">☀️</span>
+            <span id="weatherTemp">27°C</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Flight Countdown -->
+      <div class="countdown-card">
+        <div class="countdown-header">
+          <span>🛫 המראה מנתב"ג (IZ 141):</span>
+          <span style="direction:ltr; font-family:'Outfit'; font-weight:700; color:#fef08a;">11.09.2026 07:20</span>
+        </div>
+        <div class="countdown-digits-wrap" id="countdownTimer">
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cdDays">--</div>
+            <div class="countdown-label">ימים</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cdHours">--</div>
+            <div class="countdown-label">שעות</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cdMins">--</div>
+            <div class="countdown-label">דקות</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-num" id="cdSecs">--</div>
+            <div class="countdown-label">שניות</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Quick info pills -->
+    <div class="trip-pills-bar">
+      <div class="status-pill">🏨 מלון: <strong>Alimounda Mare 5★</strong></div>
+      <div class="status-pill">🚗 רכב: <strong>איסוף בשדה</strong></div>
+      <div class="status-pill">💶 יתרה למלון: <strong>822 €</strong></div>
+      <div class="status-pill">✈️ טיסות: <strong>ארקיע IZ 141/142</strong></div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('tab-map', this)">🗺️ מפה ויעדים</button>
+      <button class="tab-btn" onclick="switchTab('tab-itinerary', this)">📅 טיסות ולו"ז</button>
+      <button class="tab-btn" onclick="switchTab('tab-wind', this)">💨 יועץ חופים</button>
+      <button class="tab-btn" onclick="switchTab('tab-expenses', this)">💰 הוצאות</button>
+      <button class="tab-btn" onclick="switchTab('tab-tools', this)">🛠️ שיחון וכלים</button>
+    </nav>
+
+    <!-- TAB 1: מפה ויעדים -->
+    <section id="tab-map" class="tab-content active">
+      <div class="map-box">
+        <div id="map"></div>
+      </div>
+
+      <!-- קיצורי ניווט מהירים לטלפון (עובד תמיד גם ללא טעינת מפה!) -->
+      <div class="offline-map-banner">
+        <strong style="font-size:13px; color:var(--text-main);">📍 ניווט מהיר ישיר ליעדים ב-Google Maps:</strong>
+        <div class="map-quick-links">
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">🏨 מלון Alimounda Mare</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Karpathos+Airport+AOK">🛫 שדה תעופה (AOK)</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Diakoftis+Beach+Karpathos">🏖️ חוף דיאקופטיס (לילדים)</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Amoopi+Beach+Karpathos">🏖️ חוף אמופי (מוגן מרוח)</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Apella+Beach+Karpathos">🌊 חוף אפלה (היפה באי)</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Kyra+Panagia+Karpathos">⛪ מפרץ קירה פנאיה</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Olympos+Karpathos">🏛️ הכפר העתיק אולימפוס</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Finiki+Karpathos">🐟 כפר הדייגים פיניקי</a>
+        </div>
+      </div>
+
+      <!-- מלון Alimounda Mare -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">מלון Alimounda Mare ⭐⭐⭐⭐⭐</h2>
+            <span class="card-subtitle">פיגאדיה (Pigadia) • חוף פרטי ובריכת אינסוף</span>
+          </div>
+          <span class="badge badge-hotel">צ'ק-אין 14:00</span>
+        </div>
+
+        <div class="data-row">
+          <span>סוג חדר:</span>
+          <strong>Junior Suite (2 מבוגרים + ילד)</strong>
+        </div>
+        <div class="data-row">
+          <span>יתרה לתשלום במקום:</span>
+          <strong style="color:var(--accent-dark); font-size:14.5px;">822 € (כולל ארוחת בוקר)</strong>
+        </div>
+        <div class="data-row">
+          <span>הזמנה על שם:</span>
+          <strong>Hila Soceanu</strong>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-booking" target="_blank" href="https://www.booking.com/hotel/gr/alimounda-mare.html">🔗 Booking</a>
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">📍 ניווט</a>
+          <a class="btn btn-outline" href="tel:+302242029551">📞 קבלה</a>
+        </div>
+      </article>
+
+      <!-- שייט יומי מנמל פיגאדיה -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">שייט יומי מנמל פיגאדיה ⛵</h2>
+            <span class="card-subtitle">10 דק' הליכה לאורך הטיילת</span>
+          </div>
+          <span class="badge badge-wind">חוויה מומלצת</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:6px 0 10px;">
+          בכל בוקר סביב 10:00 יוצאות סירות מהנמל:
+          <br>1. <strong>האי סאריה (Saria Island):</strong> שמורת טבע בצפון, מערות ים וחורבות שודדי ים.
+          <br>2. <strong>מונית-ים לחופים (Sea Taxi):</strong> הגעה ימית ישירה לאפלה ולקירה פנאיה.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Port+of+Pigadia+Karpathos">📍 מיקום הנמל במפה</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- TAB 2: טיסות ולוח זמנים -->
+    <section id="tab-itinerary" class="tab-content">
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">פרטי טיסות ארקיע / קשרי תעופה ✈️</h2>
+            <span class="card-subtitle">6 נוסעים: משפחת קישון וסוציאנו</span>
+          </div>
+          <span class="badge badge-flight">כרטיסים מאושרים</span>
+        </div>
+
+        <div class="data-row">
+          <span>מספר הזמנה:</span>
+          <span class="copy-chip" onclick="copyText('255092106')">255092106 📋</span>
+        </div>
+        <div class="data-row">
+          <span>מספר דוקט:</span>
+          <span class="copy-chip" onclick="copyText('5635688')">5635688 📋</span>
+        </div>
+        <div class="data-row">
+          <span>מזהה טלפוני לקשרי תעופה:</span>
+          <span class="copy-chip" onclick="copyText('1024405021715')">1024405021715 📋</span>
+        </div>
+        <div class="data-row">
+          <span>🛫 הלוך (11/09):</span>
+          <div style="text-align:left; direction:ltr;">
+            <strong style="color:var(--primary);">IZ 141</strong> | 07:20 TLV $\to$ 08:55 AOK
+          </div>
+        </div>
+        <div class="data-row">
+          <span>🛬 חזור (14/09):</span>
+          <div style="text-align:left; direction:ltr;">
+            <strong style="color:var(--primary);">IZ 142</strong> | 11:00 AOK $\to$ 12:25 TLV
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-outline" href="tel:035205077">📞 מוקד שירות: 03-5205077</a>
+        </div>
+      </article>
+
+      <!-- לו"ז יומי -->
+      <h3 style="font-size:15.5px; font-weight:900; margin:14px 0 8px;">📅 תוכנית המסע לפי ימים (לחצו לפתיחה)</h3>
+
+      <div class="day-card open">
+        <div class="day-header" onclick="toggleDay(this)">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="day-circle">1</div>
+            <div>
+              <strong style="font-size:14px;">שישי (11.09): נחיתה ופיגאדיה</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">איסוף רכב, מלון וטברנת To Helleniko</div>
+            </div>
+          </div>
+          <span>▼</span>
+        </div>
+        <div class="day-content">
+          <div class="itinerary-step">
+            <div class="itinerary-time">08:55</div>
+            <div><strong>נחיתה בשדה AOK</strong> - איסוף רכב שכור ונסיעה של 20 דק' לפיגאדיה.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">10:30</div>
+            <div><strong>קפה בנמל פיגאדיה</strong> - עצירת התרעננות בטיילת מול המרינה.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">14:00</div>
+            <div><strong>צ'ק-אין במלון Alimounda Mare 5★</strong> - בריכה, חוף ומנוחה.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">19:30</div>
+            <div><strong>ארוחת ערב בטברנת To Helleniko</strong> - אוכל מסורתי מעולה בלב העיר.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header" onclick="toggleDay(this)">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="day-circle">2</div>
+            <div>
+              <strong style="font-size:14px;">שבת (12.09): חופי הטורקיז של המזרח</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">חוף אפלה, קירה פנאיה וערב ב-Pelagos</div>
+            </div>
+          </div>
+          <span>▼</span>
+        </div>
+        <div class="day-content">
+          <div class="itinerary-step">
+            <div class="itinerary-time">09:30</div>
+            <div><strong>חוף אפלה (Apella Beach)</strong> - מי טורקיז מהיפים באירופה. מומלץ להקדים לפני 10:30.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">13:30</div>
+            <div><strong>מפרץ קירה פנאיה</strong> - כנסיית הכיפה האדומה וארוחת צהריים של דגים טריים.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">20:30</div>
+            <div><strong>מוזיקה חיה ב-Pelagos</strong> - חוויה יוונית שמחה עם בוזוקי.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header" onclick="toggleDay(this)">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="day-circle">3</div>
+            <div>
+              <strong style="font-size:14px;">ראשון (13.09): הכפר אולימפוס ושקיעה בפיניקי</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">פולקלור הררי, טחנות רוח וטברנת דגים</div>
+            </div>
+          </div>
+          <span>▼</span>
+        </div>
+        <div class="day-content">
+          <div class="itinerary-step">
+            <div class="itinerary-time">10:00</div>
+            <div><strong>סיור בכפר ההיסטורי אולימפוס (Olympos)</strong> - מאפיית לחם מסורתית ומקרונס מקומיים.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">16:30</div>
+            <div><strong>ירידה לכפר פיניקי (Finiki)</strong> - שקיעה מרהיבה במערב וטברנת דגים על קו המים.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-card">
+        <div class="day-header" onclick="toggleDay(this)">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="day-circle">4</div>
+            <div>
+              <strong style="font-size:14px;">שני (14.09): טבילה בדיאקופטיס והמראה</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">צ'ק אאוט, רחצה קצרה וטיסה IZ 142 ב-11:00</div>
+            </div>
+          </div>
+          <span>▼</span>
+        </div>
+        <div class="day-content">
+          <div class="itinerary-step">
+            <div class="itinerary-time">07:30</div>
+            <div><strong>ארוחת בוקר וצ'ק אאוט</strong> - תשלום יתרה במלון ויציאה לשדה.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">08:15</div>
+            <div><strong>טבילת בוקר בחוף דיאקופטיס</strong> - 5 דקות משדה התעופה!</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">09:30</div>
+            <div><strong>החזרת רכב שכור בשדה AOK</strong> וצ'ק-אין לטיסת ארקיע IZ 142 (המראה ב-11:00).</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: יועץ רוח וחופים -->
+    <section id="tab-wind" class="tab-content">
+      <div class="wind-banner">
+        <div class="wind-title">💨 יועץ רוחות המלטמי (Meltemi)</div>
+        <div style="font-size:13px; color:inherit; line-height:1.5;">
+          רוח המלטמי נושבת בעיקר מצפון.
+          <br><strong>כלל הברזל:</strong> כשיש רוח צפונית מעל 25 קמ"ש, המפרצים המזרחיים (אמופי, אפלה, קירה פנאיה) נשארים מוגנים ורגועים, בעוד החופים הצפוניים והמערביים גליים!
+        </div>
+      </div>
+
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">חוף דיאקופטיס (Diakoftis) 🏖️</h2>
+            <span class="card-subtitle">דרום האי (5 דק' מהשדה)</span>
+          </div>
+          <span class="badge badge-kids">👶 חלום לילדים</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
+          "המלדיביים של יוון" - חול לבן דק, מים רדודים בגובה הברכיים לעשרות מטרים. בטוח ומושלם לקטנטנים.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Diakoftis+Beach+Karpathos">📍 ניווט ב-Maps</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">חוף אמופי (Amoopi Beach) 🏖️</h2>
+            <span class="card-subtitle">7 דקות נסיעה דרומית למלון</span>
+          </div>
+          <span class="badge badge-kids">👶 מוגן לחלוטין מרוחות</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
+          מפרץ טבעי סגור, מים צלולים ורגועים גם בימים סוערים. חוף חולי נוח מאוד עם טברנות ושמשיות.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Amoopi+Beach+Karpathos">📍 ניווט ב-Maps</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">חוף אפלה (Apella Beach) 🌊</h2>
+            <span class="card-subtitle">מהחופים היפים באירופה</span>
+          </div>
+          <span class="badge badge-wind">עוצר נשימה</span>
+        </div>
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
+          מי טורקיז עמוקים בין מצוקי אורן. מומלץ להביא נעלי מים ושנורקל.
+        </p>
+        <div class="btn-row">
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Apella+Beach+Karpathos">📍 ניווט ב-Maps</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- TAB 4: מחשבון הוצאות -->
+    <section id="tab-expenses" class="tab-content">
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">💰 מעקב וחלוקת הוצאות משותפות</h2>
+            <span class="card-subtitle">ניהול קופה משותפת ל-6 הנוסעים</span>
+          </div>
+        </div>
+
+        <div class="expense-grid">
+          <input type="text" id="expDesc" placeholder="עבור מה? (טברנה, דלק, קניות)">
+          <input type="number" id="expAmount" placeholder="סכום (€)" min="1" step="any">
+          <select id="expPayer">
+            <option value="אביב">שילם: אביב</option>
+            <option value="הילה">שילמה: הילה</option>
+            <option value="ידידיה">שילם: ידידיה</option>
+            <option value="אחר">שילם: אחר</option>
+          </select>
+          <button class="btn btn-primary" onclick="addExpense()">➕ הוסף הוצאה</button>
+        </div>
+
+        <div id="expenseList"></div>
+
+        <div class="data-row" style="margin-top:12px; font-weight:800; font-size:15px;">
+          <span>סה"כ הוצאות שנרשמו:</span>
+          <span id="totalExpenses" style="color:var(--primary); font-size:17px;">0 €</span>
+        </div>
+
+        <div class="settlement-box" id="settlementBox">
+          <strong>💡 חלוקה שווה ל-3 נציגים:</strong>
+          <div id="settlementDetails" style="margin-top:4px;">טרם נרשמו הוצאות.</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; margin-top:12px;">
+          <button onclick="clearExpenses()" style="background:none; border:none; color:var(--danger); font-size:12px; font-weight:700; cursor:pointer;">
+            🗑️ איפוס הוצאות
+          </button>
+          <button onclick="exportExpenses()" style="background:none; border:none; color:var(--primary); font-size:12px; font-weight:700; cursor:pointer;">
+            📋 העתק סיכום לוואטסאפ
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: חירום ושיחון יוונית -->
+    <section id="tab-tools" class="tab-content">
+      <div class="card">
+        <h2 class="card-title" style="margin-bottom:10px;">🚨 אנשי קשר ומוקדי חירום</h2>
+        <div class="data-row">
+          <span>המרכז הרפואי / בי"ח (פיגאדיה):</span>
+          <a href="tel:+302245022228" class="copy-chip">📞 +30 22450 22228</a>
+        </div>
+        <div class="data-row">
+          <span>מוקד חירום אירופי (משטרה/אמבולנס):</span>
+          <a href="tel:112" class="copy-chip">📞 112</a>
+        </div>
+        <div class="data-row">
+          <span>תחנת משטרת קרפאטוס:</span>
+          <a href="tel:+302245022222" class="copy-chip">📞 +30 22450 22222</a>
+        </div>
+        <div class="data-row">
+          <span>קבלה במלון Alimounda Mare:</span>
+          <a href="tel:+302242029551" class="copy-chip">📞 +30 22420 29551</a>
+        </div>
+      </div>
+
+      <!-- שיחון יוונית -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">🇬🇷 שיחון יוונית מקומי</h2>
+            <span class="card-subtitle">לחצו על 🔊 להשמעת הגייה יוונית</span>
+          </div>
+        </div>
+
+        <div class="phrase-grid">
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Kalimera (קלימרה)</span>
+              <button class="speak-btn" onclick="speakGreek('Καλημέρα')">🔊</button>
+            </div>
+            <div class="phrase-heb">בוקר טוב</div>
+          </div>
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Efcharisto (אפחריסטו)</span>
+              <button class="speak-btn" onclick="speakGreek('Ευχαριστώ')">🔊</button>
+            </div>
+            <div class="phrase-heb">תודה רבה</div>
+          </div>
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Parakalo (פאראקאלו)</span>
+              <button class="speak-btn" onclick="speakGreek('Παρακαλώ')">🔊</button>
+            </div>
+            <div class="phrase-heb">בבקשה / על לא דבר</div>
+          </div>
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Ton logariasmo (טון לוגריאזמו)</span>
+              <button class="speak-btn" onclick="speakGreek('Τον λογαριασμό παρακαλώ')">🔊</button>
+            </div>
+            <div class="phrase-heb">אפשר חשבון?</div>
+          </div>
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Nero (נרו)</span>
+              <button class="speak-btn" onclick="speakGreek('Νερό')">🔊</button>
+            </div>
+            <div class="phrase-heb">מים</div>
+          </div>
+          <div class="phrase-card">
+            <div class="phrase-gr">
+              <span>Yamas! (יאמאס!)</span>
+              <button class="speak-btn" onclick="speakGreek('Στην υγειά μας')">🔊</button>
+            </div>
+            <div class="phrase-heb">לחיים!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- צ'ק-ליסט -->
+      <div class="card">
+        <h2 class="card-title" style="margin-bottom:8px;">🎒 צ'ק-ליסט ציוד והכנות</h2>
+        <div id="checklistContainer">
+          <label class="check-item">
+            <input type="checkbox" onchange="toggleCheck(this, 'c1')" id="c1">
+            <span>דרכונים בתוקף (לפחות 3 חודשים)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" onchange="toggleCheck(this, 'c2')" id="c2">
+            <span>רישיון נהיגה ישראלי / בינלאומי פלסטיק</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" onchange="toggleCheck(this, 'c3')" id="c3">
+            <span>נעלי מים (חשוב לחלוקי נחל באפלה)</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" onchange="toggleCheck(this, 'c4')" id="c4">
+            <span>משקפות ושנורקלים</span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" onchange="toggleCheck(this, 'c5')" id="c5">
+            <span>ביטוח נסיעות לחו"ל פעיל</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-bar">
+      <button class="bar-item active" onclick="triggerTabByIndex(0)">
+        <span class="bar-item-icon">🗺️</span>
+        <span>מפה</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(1)">
+        <span class="bar-item-icon">📅</span>
+        <span>לו"ז</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(2)">
+        <span class="bar-item-icon">💨</span>
+        <span>חופים</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(3)">
+        <span class="bar-item-icon">💰</span>
+        <span>הוצאות</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(4)">
+        <span class="bar-item-icon">🛠️</span>
+        <span>כלים</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">הועתק ללוח!</span>
+  </div>
+
+  <!-- Leaflet Script with fallback -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <script>
+    /* 1. Countdown */
+    function updateCountdown() {
+      const flightDate = new Date("2026-09-11T07:20:00+03:00").getTime();
+      const now = new Date().getTime();
+      const diff = flightDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('countdownTimer').innerHTML = '<div style="color:#fef08a; font-weight:800;">🎉 חופשה מהנה בקרפאטוס! 🏖️</div>';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('cdDays').innerText = days;
+      document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('cdMins').innerText = String(mins).padStart(2, '0');
+      document.getElementById('cdSecs').innerText = String(secs).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    /* 2. Toast & Copy */
+    let toastTimer = null;
+    function showToast(msg, icon = '✅') {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(`הועתק: ${text}`)).catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(`הועתק: ${text}`);
+    }
+
+    /* 3. Tab Switching */
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.bar-item').forEach(b => b.classList.remove('active'));
+
+      if (btn) btn.classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+
+      const tabOrder = ['tab-map', 'tab-itinerary', 'tab-wind', 'tab-expenses', 'tab-tools'];
+      const index = tabOrder.indexOf(tabId);
+      if (index !== -1) {
+        const bottomBtns = document.querySelectorAll('.bar-item');
+        if (bottomBtns[index]) bottomBtns[index].classList.add('active');
+      }
+
+      if (tabId === 'tab-map' && map) {
+        setTimeout(() => map.invalidateSize(), 250);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function triggerTabByIndex(index) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      if (tabs[index]) tabs[index].click();
+    }
+
+    function toggleDay(header) {
+      header.parentElement.classList.toggle('open');
+    }
+
+    /* 4. Leaflet Map with Safe Fallback */
+    let map = null;
+    function initMap() {
+      try {
+        if (typeof L !== 'undefined') {
+          map = L.map('map', { zoomControl: true }).setView([35.53, 27.18], 10);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
+
+          const locs = [
+            { name: "Alimounda Mare 5★", coords: [35.5095, 27.2061] },
+            { name: "שדה תעופה (AOK)", coords: [35.4214, 27.1460] },
+            { name: "חוף דיאקופטיס (לילדים)", coords: [35.4055, 27.1650] },
+            { name: "חוף אמופי (מוגן מרוח)", coords: [35.4740, 27.1950] },
+            { name: "חוף אפלה (מי טורקיז)", coords: [35.6033, 27.1568] },
+            { name: "הכפר אולימפוס", coords: [35.7422, 27.1786] },
+            { name: "פיניקי (דגים ושקיעה)", coords: [35.4912, 27.1170] }
+          ];
+
+          locs.forEach(l => {
+            L.marker(l.coords).addTo(map).bindPopup(`<b>${l.name}</b><br><a href="https://maps.google.com/?q=${l.coords[0]},${l.coords[1]}" target="_blank">ניווט במפה</a>`);
+          });
+        }
+      } catch (e) {
+        console.log("Map offline fallback active");
+      }
+    }
+    window.addEventListener('DOMContentLoaded', initMap);
+
+    /* 5. Live Weather */
+    async function fetchLiveWeather() {
+      try {
+        const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.5095&longitude=27.2061&current_weather=true");
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('weatherTemp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
+        }
+      } catch (e) {}
+    }
+    fetchLiveWeather();
+
+    /* 6. Expenses & Fair Share */
+    let expenses = JSON.parse(localStorage.getItem('karpathos_expenses_v2') || '[]');
+
+    function renderExpenses() {
+      const list = document.getElementById('expenseList');
+      const totalEl = document.getElementById('totalExpenses');
+      const settlementEl = document.getElementById('settlementDetails');
+      if (!list) return;
+
+      list.innerHTML = '';
+      let sum = 0;
+      let payers = { 'אביב': 0, 'הילה': 0, 'ידידיה': 0, 'אחר': 0 };
+
+      if (expenses.length === 0) {
+        list.innerHTML = '<div style="color:var(--text-muted); font-size:12.5px; text-align:center; padding:10px;">טרם נרשמו הוצאות.</div>';
+      }
+
+      expenses.forEach((item, index) => {
+        sum += Number(item.amount);
+        payers[item.payer] = (payers[item.payer] || 0) + Number(item.amount);
+        list.innerHTML += `
+          <div class="expense-item">
+            <div><strong>${item.payer}:</strong> ${item.desc}</div>
+            <div style="display:flex; align-items:center;">
+              <strong>${Number(item.amount).toFixed(2)} €</strong>
+              <button class="expense-del-btn" onclick="deleteExpense(${index})">✕</button>
+            </div>
+          </div>
+        `;
+      });
+
+      totalEl.innerText = `${sum.toFixed(2)} €`;
+      if (sum > 0) {
+        const perPerson = (sum / 3).toFixed(2);
+        settlementEl.innerHTML = `
+          <div>שליש לכל משפחה/נציג: <strong>${perPerson} €</strong></div>
+          <div style="margin-top:4px;">
+            • אביב שילם: <strong>${payers['אביב'].toFixed(2)} €</strong> | 
+            • הילה: <strong>${payers['הילה'].toFixed(2)} €</strong> | 
+            • ידידיה: <strong>${payers['ידידיה'].toFixed(2)} €</strong>
+          </div>
+        `;
+      } else {
+        settlementEl.innerText = 'טרם נרשמו הוצאות.';
+      }
+    }
+
+    function addExpense() {
+      const desc = document.getElementById('expDesc').value.trim();
+      const amount = parseFloat(document.getElementById('expAmount').value);
+      const payer = document.getElementById('expPayer').value;
+
+      if (!desc || isNaN(amount) || amount <= 0) {
+        showToast('נא למלא תיאור וסכום תקין', '⚠️');
+        return;
+      }
+
+      expenses.push({ desc, amount, payer });
+      localStorage.setItem('karpathos_expenses_v2', JSON.stringify(expenses));
+      document.getElementById('expDesc').value = '';
+      document.getElementById('expAmount').value = '';
+      renderExpenses();
+      showToast(`הוצאה על סך ${amount} € נוספה!`);
+    }
+
+    function deleteExpense(index) {
+      expenses.splice(index, 1);
+      localStorage.setItem('karpathos_expenses_v2', JSON.stringify(expenses));
+      renderExpenses();
+    }
+
+    function clearExpenses() {
+      if (confirm('לאפס את כל ההוצאות?')) {
+        expenses = [];
+        localStorage.removeItem('karpathos_expenses_v2');
+        renderExpenses();
+      }
+    }
+
+    function exportExpenses() {
+      if (expenses.length === 0) return showToast('אין הוצאות להעתקה', 'ℹ️');
+      let text = `🇬🇷 *סיכום הוצאות חופשת קרפאטוס 2026:*\n`;
+      let sum = 0;
+      expenses.forEach(e => {
+        text += `• ${e.payer} (${e.desc}): ${e.amount} €\n`;
+        sum += Number(e.amount);
+      });
+      text += `\n*סה"כ כללי:* ${sum.toFixed(2)} €\n*שליש ממוצע:* ${(sum / 3).toFixed(2)} €`;
+      copyText(text);
+    }
+    renderExpenses();
+
+    /* 7. Greek Pronunciation */
+    function speakGreek(phrase) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(phrase);
+        u.lang = 'el-GR';
+        u.rate = 0.9;
+        window.speechSynthesis.speak(u);
+        showToast(`משמיע: ${phrase}`, '🔊');
+      } else {
+        showToast(phrase, '🇬🇷');
+      }
+    }
+
+    /* 8. Checklist */
+    const savedChecks = JSON.parse(localStorage.getItem('karpathos_checks') || '{}');
+    Object.keys(savedChecks).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.checked = savedChecks[id];
+        if (savedChecks[id]) el.parentElement.classList.add('done');
+      }
+    });
+
+    function toggleCheck(checkbox, id) {
+      savedChecks[id] = checkbox.checked;
+      localStorage.setItem('karpathos_checks', JSON.stringify(savedChecks));
+      if (checkbox.checked) checkbox.parentElement.classList.add('done');
+      else checkbox.parentElement.classList.remove('done');
+    }
+
+    /* 9. Dark Mode */
+    function toggleTheme() {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.body.removeAttribute('data-theme');
+        document.getElementById('themeToggleBtn').innerText = '🌙';
+        localStorage.setItem('karpathos_theme', 'light');
+      } else {
+        document.body.setAttribute('data-theme', 'dark');
+        document.getElementById('themeToggleBtn').innerText = '☀️';
+        localStorage.setItem('karpathos_theme', 'dark');
+      }
+    }
+    if (localStorage.getItem('karpathos_theme') === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+      const b = document.getElementById('themeToggleBtn');
+      if (b) b.innerText = '☀️';
+    }
+  </script>
+</body>
+</html>
