@@ -766,16 +766,140 @@
 
     <!-- Navigation Tabs -->
     <nav class="tabs-nav">
-      <button class="tab-btn active" onclick="switchTab('tab-recommend', this)">🌟 המלצות</button>
+      <button class="tab-btn active" onclick="switchTab('tab-arrival', this)">✈️ הגעה ומלון</button>
+      <button class="tab-btn" onclick="switchTab('tab-recommend', this)">🌟 המלצות</button>
       <button class="tab-btn" onclick="switchTab('tab-map', this)">🗺️ מפה וניווט</button>
-      <button class="tab-btn" onclick="switchTab('tab-itinerary', this)">📅 טיסות ולו"ז</button>
+      <button class="tab-btn" onclick="switchTab('tab-itinerary', this)">📅 לו"ז מלא</button>
       <button class="tab-btn" onclick="switchTab('tab-money', this)">💶 שער ומוניות</button>
       <button class="tab-btn" onclick="switchTab('tab-wind', this)">💨 מזג אוויר</button>
       <button class="tab-btn" onclick="switchTab('tab-expenses', this)">💰 הוצאות</button>
     </nav>
 
-    <!-- TAB 1: המלצות וקניות (פייד גלילה / פיגאדיה, שמן זית, טברנות) -->
-    <section id="tab-recommend" class="tab-content active">
+    <!-- TAB 1: פרטי טיסה, הגעה, מסלול למלון והזמנה (The Essentials) -->
+    <section id="tab-arrival" class="tab-content active">
+      
+      <!-- פרטי טיסות ושעות -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">✈️ טיסות ארקיע / קשרי תעופה</h2>
+            <span class="card-subtitle">6 נוסעים: משפחת קישון וסוציאנו</span>
+          </div>
+          <span class="badge badge-flight">כרטיסים מאושרים</span>
+        </div>
+
+        <div class="data-row">
+          <span>🛫 טיסת הלוך (שישי 11/09):</span>
+          <div style="direction:ltr; text-align:left;">
+            <strong style="color:var(--primary); font-size:14px;">IZ 141</strong> | 07:20 TLV $\to$ 08:55 AOK
+          </div>
+        </div>
+        <div class="data-row">
+          <span>🛬 טיסת חזור (שני 14/09):</span>
+          <div style="direction:ltr; text-align:left;">
+            <strong style="color:var(--primary); font-size:14px;">IZ 142</strong> | 11:00 AOK $\to$ 12:25 TLV
+          </div>
+        </div>
+
+        <div class="data-row">
+          <span>מספר הזמנה:</span>
+          <span class="copy-chip" onclick="copyText('255092106')">255092106 📋</span>
+        </div>
+        <div class="data-row">
+          <span>מספר דוקט:</span>
+          <span class="copy-chip" onclick="copyText('5635688')">5635688 📋</span>
+        </div>
+        <div class="data-row">
+          <span>מזהה טלפוני לקשרי תעופה:</span>
+          <span class="copy-chip" onclick="copyText('1024405021715')">1024405021715 📋</span>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-outline" href="tel:035205077">📞 מוקד שירות: 03-5205077</a>
+        </div>
+      </article>
+
+      <!-- מסלול נסיעה והגעה מהשדה למלון -->
+      <article class="card" style="border-right: 4px solid var(--primary);">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">🚗 מסלול והגעה מהשדה למלון</h2>
+            <span class="card-subtitle">שדה AOK ⬅ מלון Alimounda Mare בפיגאדיה</span>
+          </div>
+          <span class="badge badge-kids">כ-20 דק' נסיעה</span>
+        </div>
+
+        <div style="font-size:13px; line-height:1.55; color:var(--text-main); margin-bottom:10px;">
+          • <strong>מרחק נסיעה:</strong> כ-17 ק"מ בכביש הראשי של האי (סלול, רחב ונוח מאוד לנהיגה).<br>
+          • <strong>איסוף רכב שכור בשדה:</strong> הרכבים ממתינים בחניון מול אולם הנוסעים מיד לאחר הנחיתה.<br>
+          • <strong>מוניות בשדה:</strong> תעריף רשמי של כ-25-30 € למונית עד 4 נוסעים. תחנת מוניות: <a href="tel:+302245022705" style="color:var(--primary); font-weight:bold;">+30 22450 22705</a>.
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?saddr=Karpathos+Airport+AOK&daddr=Alimounda+Mare+Hotel+Karpathos">
+            📍 פתח מסלול ניווט ב-Google Maps
+          </a>
+        </div>
+      </article>
+
+      <!-- פרטי הזמנת המלון -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">🏨 מלון Alimounda Mare ⭐⭐⭐⭐⭐</h2>
+            <span class="card-subtitle">פיגאדיה (Pigadia) • חוף פרטי ובריכת אינסוף מול המפרץ</span>
+          </div>
+          <span class="badge badge-hotel">צ'ק-אין 14:00</span>
+        </div>
+
+        <div class="data-row">
+          <span>הזמנה על שם:</span>
+          <strong>Hila Soceanu</strong>
+        </div>
+        <div class="data-row">
+          <span>סוג חדר:</span>
+          <strong>Junior Suite (2 מבוגרים + ילד)</strong>
+        </div>
+        <div class="data-row">
+          <span>יתרה לתשלום במקום:</span>
+          <strong style="color:var(--accent-dark); font-size:14.5px;">822 € (<span id="hotelCardIls">כ-2,877 ₪</span>)</strong>
+        </div>
+        <div class="data-row">
+          <span>ארוחות:</span>
+          <span>ארוחת בוקר עשירה כלולה במחיר</span>
+        </div>
+        <div class="data-row">
+          <span>הגעה מוקדמת:</span>
+          <span>אם מגיעים לפני 14:00 - ניתן להפקיד מזוודות ולשבת בבריכה/בטיילת!</span>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-booking" target="_blank" href="https://www.booking.com/hotel/gr/alimounda-mare.html">🔗 Booking</a>
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">📍 ניווט ישיר למלון</a>
+          <a class="btn btn-outline" href="tel:+302242029551">📞 קבלה</a>
+        </div>
+      </article>
+
+      <!-- לו"ז מהיר לשעות ההגעה (שישי 11.09) -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">⏱️ לו"ז מהיר לשעות ההגעה (שישי 11.09)</h2>
+            <span class="card-subtitle">מהנחיתה ועד לארוחת הערב</span>
+          </div>
+        </div>
+        <div style="font-size:13px; line-height:1.6; color:var(--text-muted);">
+          • <strong>07:20:</strong> המראה מנתב"ג בטיסת ארקיע IZ 141.<br>
+          • <strong>08:55:</strong> נחיתה בקרפאטוס (AOK), איסוף מזוודות וקבלת הרכב השכור.<br>
+          • <strong>10:30:</strong> הגעה לפיגאדיה – קפה ומאפה בנמל מול סירות הדייגים.<br>
+          • <strong>14:00:</strong> צ'ק-אין במלון Alimounda Mare, התארגנות בחדר ורחצה בבריכה.<br>
+          • <strong>19:30:</strong> ארוחת ערב פתיחה מעולה בטברנת <em>To Helleniko</em>.
+        </div>
+      </article>
+    </section>
+
+    <!-- TAB 2: המלצות וקניות (פייד גלילה / פיגאדיה, שמן זית, טברנות) -->
+    <section id="tab-recommend" class="tab-content">
       
       <!-- פיגאדיה (פייד גלילה) ומוקדי חובה -->
       <article class="card">
@@ -1162,26 +1286,30 @@
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-bar">
       <button class="bar-item active" onclick="triggerTabByIndex(0)">
+        <span class="bar-item-icon">✈️</span>
+        <span>הגעה</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(1)">
         <span class="bar-item-icon">🌟</span>
         <span>המלצות</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(1)">
+      <button class="bar-item" onclick="triggerTabByIndex(2)">
         <span class="bar-item-icon">🗺️</span>
         <span>מפה</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(2)">
+      <button class="bar-item" onclick="triggerTabByIndex(3)">
         <span class="bar-item-icon">📅</span>
         <span>לו"ז</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(3)">
+      <button class="bar-item" onclick="triggerTabByIndex(4)">
         <span class="bar-item-icon">💶</span>
         <span>שער/מונית</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(4)">
+      <button class="bar-item" onclick="triggerTabByIndex(5)">
         <span class="bar-item-icon">💨</span>
         <span>מזג אוויר</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(5)">
+      <button class="bar-item" onclick="triggerTabByIndex(6)">
         <span class="bar-item-icon">💰</span>
         <span>הוצאות</span>
       </button>
@@ -1261,7 +1389,7 @@
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
 
-      const tabOrder = ['tab-recommend', 'tab-map', 'tab-itinerary', 'tab-money', 'tab-wind', 'tab-expenses'];
+      const tabOrder = ['tab-arrival', 'tab-recommend', 'tab-map', 'tab-itinerary', 'tab-money', 'tab-wind', 'tab-expenses'];
       const index = tabOrder.indexOf(tabId);
       if (index !== -1) {
         const bottomBtns = document.querySelectorAll('.bar-item');
@@ -1299,6 +1427,9 @@
       }
       if (document.getElementById('hotelIlsCost')) {
         document.getElementById('hotelIlsCost').innerText = `כ-${Math.round(822 * EUR_ILS_RATE).toLocaleString()} ₪`;
+      }
+      if (document.getElementById('hotelCardIls')) {
+        document.getElementById('hotelCardIls').innerText = `כ-${Math.round(822 * EUR_ILS_RATE).toLocaleString()} ₪`;
       }
       if (document.getElementById('headerEurRate')) {
         document.getElementById('headerEurRate').innerText = `${EUR_ILS_RATE.toFixed(2)} ₪`;
