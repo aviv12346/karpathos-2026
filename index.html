@@ -7,30 +7,32 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="קרפאטוס 2026">
-  <meta name="description" content="קרפאטוס 2026 - מרכז מידע וניהול חופשה משפחתית חכם">
+  <meta name="description" content="קרפאטוס 2026 - מרכז מידע, ניווט והמלצות לחופשה משפחתית">
   <title>קרפאטוס 2026 🇬🇷 | Smart Travel Hub</title>
 
-  <!-- Google Fonts with local fallback -->
+  <!-- Google Fonts: Heebo & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800;900&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Leaflet CSS for Map (Graceful Fallback included if offline) -->
+  <!-- Leaflet Map CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 
   <style>
     :root {
       --primary: #0284c7;
       --primary-dark: #0369a1;
-      --primary-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
+      --primary-deep: #0c4a6e;
       --accent: #f59e0b;
       --accent-light: #fef3c7;
       --accent-dark: #b45309;
       --turquoise: #06b6d4;
+      --turquoise-light: #cffafe;
       --success: #10b981;
       --success-light: #dcfce7;
       --danger: #ef4444;
-      --danger-light: #fee2e2;
+      --purple: #8b5cf6;
+      --purple-light: #ede9fe;
       
       --bg: #f8fafc;
       --card-bg: #ffffff;
@@ -40,13 +42,14 @@
       --text-muted: #64748b;
       --text-subtle: #94a3b8;
       
-      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
-      --shadow-md: 0 8px 22px rgba(15, 23, 42, 0.08);
-      --shadow-lg: 0 14px 32px rgba(2, 132, 199, 0.18);
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 16px 36px rgba(2, 132, 199, 0.18);
+      --glass-bg: rgba(255, 255, 255, 0.85);
       
       --radius-sm: 10px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
       --radius-pill: 9999px;
     }
 
@@ -59,15 +62,16 @@
       --text-muted: #94a3b8;
       --text-subtle: #64748b;
       --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
-      --shadow-lg: 0 14px 34px rgba(0, 0, 0, 0.55);
+      --shadow-md: 0 8px 26px rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.6);
+      --glass-bg: rgba(19, 27, 46, 0.88);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       -webkit-tap-highlight-color: transparent;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
@@ -86,52 +90,39 @@
       position: relative;
     }
 
-    /* Mobile Install Guide Banner */
-    .install-hint-banner {
-      background: #0f172a;
+    /* Top Resort Header */
+    .hero-header {
+      background: linear-gradient(145deg, #0284c7 0%, #0369a1 45%, #075985 100%);
       color: #fff;
-      padding: 8px 14px;
-      font-size: 11.5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      direction: rtl;
-    }
-    .install-hint-banner a {
-      color: #7dd3fc;
-      text-decoration: underline;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* Header */
-    .header {
-      background: var(--primary-gradient);
-      color: #fff;
-      padding: 22px 18px 18px;
+      padding: 24px 20px 20px;
       border-bottom-left-radius: var(--radius-lg);
       border-bottom-right-radius: var(--radius-lg);
       box-shadow: var(--shadow-lg);
       position: relative;
+      overflow: hidden;
     }
 
-    .header-top {
+    .hero-header::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 70%);
+      border-radius: 50%;
+    }
+
+    .hero-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 14px;
+      position: relative;
+      z-index: 2;
     }
 
-    .header-title-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .header-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    .hero-badge-tag {
       background: rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(8px);
       padding: 3px 10px;
@@ -139,27 +130,30 @@
       font-size: 11px;
       font-weight: 700;
       color: #e0f2fe;
-      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 4px;
     }
 
-    .header-title {
+    .hero-title {
       font-size: 26px;
       font-weight: 900;
       letter-spacing: -0.5px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .header-actions {
+    .hero-actions {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .icon-btn {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #fff;
       width: 36px;
       height: 36px;
@@ -168,20 +162,19 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
+      backdrop-filter: blur(8px);
     }
-    .icon-btn:active {
-      transform: scale(0.92);
-    }
+    .icon-btn:active { transform: scale(0.92); }
 
-    .weather-badge {
+    .weather-pill-btn {
       background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.3);
       padding: 6px 12px;
       border-radius: var(--radius-pill);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -189,22 +182,23 @@
       color: #fff;
     }
 
-    /* Countdown Bar */
+    /* Countdown Card */
     .countdown-card {
-      background: rgba(15, 23, 42, 0.32);
+      background: rgba(15, 23, 42, 0.35);
       backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: var(--radius-md);
       padding: 10px 14px;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      position: relative;
+      z-index: 2;
     }
 
     .countdown-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       font-size: 12px;
       font-weight: 600;
       color: #e2e8f0;
@@ -227,7 +221,7 @@
     }
 
     .countdown-num {
-      font-family: 'Outfit', -apple-system, sans-serif;
+      font-family: 'Outfit', sans-serif;
       font-size: 18px;
       font-weight: 800;
       color: #fef08a;
@@ -241,17 +235,17 @@
       font-weight: 600;
     }
 
-    /* Trip Quick Status Bar */
-    .trip-pills-bar {
+    /* Quick Highlight Ticker */
+    .quick-stats-bar {
       display: flex;
       gap: 6px;
       padding: 12px 16px 4px;
       overflow-x: auto;
       scrollbar-width: none;
     }
-    .trip-pills-bar::-webkit-scrollbar { display: none; }
+    .quick-stats-bar::-webkit-scrollbar { display: none; }
 
-    .status-pill {
+    .stat-pill {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: var(--radius-pill);
@@ -265,11 +259,9 @@
       box-shadow: var(--shadow-sm);
       color: var(--text-muted);
     }
-    .status-pill strong {
-      color: var(--primary);
-    }
+    .stat-pill strong { color: var(--primary); }
 
-    /* Tabs Bar */
+    /* Navigation Bar */
     .tabs-nav {
       display: flex;
       gap: 6px;
@@ -285,7 +277,7 @@
 
     .tab-btn {
       flex: 1;
-      min-width: 82px;
+      min-width: 86px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       padding: 9px 8px;
@@ -313,11 +305,9 @@
     .tab-content {
       display: none;
       padding: 12px 16px;
-      animation: fadeIn 0.2s ease forwards;
+      animation: fadeIn 0.22s ease forwards;
     }
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content.active { display: block; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(4px); }
@@ -332,6 +322,7 @@
       margin-bottom: 12px;
       border: 1px solid var(--card-border);
       box-shadow: var(--shadow-sm);
+      position: relative;
     }
 
     .card-head {
@@ -376,6 +367,8 @@
     .badge-flight { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
     .badge-kids { background: var(--success-light); color: #166534; border: 1px solid #bbf7d0; }
     .badge-wind { background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+    .badge-food { background: #ffedd5; color: #c2410c; border: 1px solid #fed7aa; }
+    .badge-tip { background: var(--purple-light); color: var(--purple); border: 1px solid #ddd6fe; }
 
     /* Data Rows */
     .data-row {
@@ -386,9 +379,7 @@
       border-bottom: 1px dashed var(--card-border);
       font-size: 13px;
     }
-    .data-row:last-of-type {
-      border-bottom: none;
-    }
+    .data-row:last-of-type { border-bottom: none; }
 
     .copy-chip {
       background: var(--card-hover);
@@ -402,7 +393,7 @@
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 12.5px;
+      font-size: 12px;
       user-select: none;
     }
     .copy-chip:active {
@@ -411,7 +402,7 @@
       color: #fff;
     }
 
-    /* Buttons */
+    /* Action Buttons */
     .btn-row {
       display: flex;
       gap: 8px;
@@ -433,14 +424,13 @@
       justify-content: center;
       gap: 5px;
     }
-    .btn:active {
-      transform: scale(0.97);
-    }
+    .btn:active { transform: scale(0.97); }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-outline { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); }
     .btn-booking { background: #003580; color: #fff; }
+    .btn-accent { background: var(--accent); color: #fff; }
 
-    /* Map Box & SVG Fallback */
+    /* Map Box */
     .map-box {
       border-radius: var(--radius-md);
       overflow: hidden;
@@ -448,23 +438,10 @@
       border: 1px solid var(--card-border);
       margin-bottom: 14px;
       background: #e2e8f0;
-      position: relative;
     }
-    #map {
-      height: 280px;
-      width: 100%;
-      z-index: 10;
-    }
+    #map { height: 280px; width: 100%; z-index: 10; }
 
-    /* Offline/Direct Visual Map Alternative */
-    .offline-map-banner {
-      background: var(--card-bg);
-      padding: 12px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--card-border);
-      margin-bottom: 14px;
-    }
-    .map-quick-links {
+    .map-quick-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 6px;
@@ -473,15 +450,105 @@
     .map-quick-link {
       background: var(--card-hover);
       border: 1px solid var(--card-border);
-      padding: 6px 8px;
+      padding: 7px 9px;
       border-radius: 8px;
-      font-size: 11.5px;
+      font-size: 12px;
       text-decoration: none;
       color: var(--text-main);
       display: flex;
       align-items: center;
       gap: 5px;
       font-weight: 700;
+    }
+
+    /* Currency Converter Widget */
+    .converter-card {
+      background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+      border: 1px solid #a5f3fc;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    [data-theme="dark"] .converter-card {
+      background: linear-gradient(135deg, #083344 0%, #164e63 100%);
+      border-color: #0e7490;
+    }
+    .calc-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .calc-input {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #7dd3fc;
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      text-align: center;
+      background: #fff;
+      color: #0f172a;
+    }
+    .calc-res {
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #0284c7;
+    }
+    [data-theme="dark"] .calc-res { color: #7dd3fc; }
+
+    .quick-conv-table {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 11px;
+      text-align: center;
+    }
+    .quick-conv-item {
+      background: rgba(255,255,255,0.7);
+      padding: 4px 2px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    [data-theme="dark"] .quick-conv-item {
+      background: rgba(0,0,0,0.25);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    /* Taxi Fare Card */
+    .taxi-card {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    [data-theme="dark"] .taxi-card {
+      background: #451a03;
+      border-color: #78350f;
+    }
+
+    /* Shopping & Gastronomy */
+    .shopping-item {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--card-border);
+    }
+    .shopping-item:last-child { border-bottom: none; }
+    .shop-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--card-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
     }
 
     /* Day Accordion */
@@ -522,9 +589,7 @@
       font-size: 13px;
       line-height: 1.55;
     }
-    .day-card.open .day-content {
-      display: block;
-    }
+    .day-card.open .day-content { display: block; }
     .itinerary-step {
       display: flex;
       gap: 10px;
@@ -538,28 +603,6 @@
       min-width: 42px;
       direction: ltr;
       text-align: left;
-    }
-
-    /* Wind Advisor */
-    .wind-banner {
-      background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-      border: 1px solid #7dd3fc;
-      border-radius: var(--radius-md);
-      padding: 14px;
-      margin-bottom: 14px;
-    }
-    [data-theme="dark"] .wind-banner {
-      background: linear-gradient(135deg, #0c2b48 0%, #083344 100%);
-      border-color: #0284c7;
-    }
-    .wind-title {
-      font-size: 15px;
-      font-weight: 900;
-      color: #0369a1;
-      margin-bottom: 4px;
-    }
-    [data-theme="dark"] .wind-title {
-      color: #7dd3fc;
     }
 
     /* Expenses */
@@ -598,76 +641,6 @@
       margin-right: 6px;
     }
 
-    .settlement-box {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 12px;
-      color: #166534;
-    }
-    [data-theme="dark"] .settlement-box {
-      background: #052e16;
-      border-color: #14532d;
-      color: #86efac;
-    }
-
-    /* Greek Phrases */
-    .phrase-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-    .phrase-card {
-      background: var(--card-hover);
-      padding: 10px;
-      border-radius: 10px;
-      border: 1px solid var(--card-border);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 3px;
-    }
-    .phrase-gr {
-      font-weight: 800;
-      color: var(--primary);
-      font-size: 13.5px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .phrase-heb {
-      font-size: 12px;
-      color: var(--text-main);
-    }
-    .speak-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    /* Checklist */
-    .check-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--card-border);
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .check-item input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      accent-color: var(--primary);
-    }
-    .check-item.done span {
-      text-decoration: line-through;
-      color: var(--text-subtle);
-    }
-
     /* Toast */
     #toast {
       position: fixed;
@@ -704,7 +677,7 @@
       border-top: 1px solid var(--card-border);
       display: flex;
       justify-content: space-around;
-      padding: 8px 8px calc(env(safe-area-inset-bottom, 0px) + 8px);
+      padding: 8px 6px calc(env(safe-area-inset-bottom, 0px) + 8px);
       box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
       z-index: 1000;
       max-width: 520px;
@@ -718,46 +691,38 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       cursor: pointer;
       flex: 1;
     }
-    .bar-item.active {
-      color: var(--primary);
-    }
-    .bar-item-icon {
-      font-size: 18px;
-    }
+    .bar-item.active { color: var(--primary); }
+    .bar-item-icon { font-size: 18px; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
 
-    <!-- Mobile Installation Tip Banner -->
-    <div class="install-hint-banner" id="pwaBanner">
-      <span>📱 <strong>טיפ לנייד:</strong> לחצו על <strong>שתף / תפריט דפדפן</strong> וביחרו <strong>"הוסף למסך הבית"</strong> לקבלת אפליקציה מלאה!</span>
-      <span onclick="document.getElementById('pwaBanner').style.display='none'" style="cursor:pointer; padding-right:8px; font-weight:800;">✕</span>
-    </div>
-
-    <!-- Header -->
-    <header class="header">
-      <div class="header-top">
-        <div class="header-title-wrap">
-          <div class="header-tag">
+    <!-- Top Header -->
+    <header class="hero-header">
+      <div class="hero-top">
+        <div>
+          <div class="hero-badge-tag">
             <span>🇬🇷 11-14 בספטמבר 2026</span>
+            <span>•</span>
+            <span>6 נוסעים</span>
           </div>
-          <h1 class="header-title">
+          <h1 class="hero-title">
             <span>קרפאטוס</span>
             <span style="font-family:'Outfit'; font-weight:400; opacity:0.9;">2026</span>
           </h1>
-          <span style="font-size:12px; color:#e0f2fe; opacity:0.9;">6 נוסעים | משפחת קישון וסוציאנו</span>
+          <span style="font-size:12px; color:#e0f2fe;">משפחת קישון וסוציאנו | Alimounda Mare 5★</span>
         </div>
 
-        <div class="header-actions">
+        <div class="hero-actions">
           <button class="icon-btn" onclick="toggleTheme()" title="שנה מצב תצוגה" id="themeToggleBtn">🌙</button>
-          <div class="weather-badge" id="weatherWidget" onclick="fetchLiveWeather()" title="לחץ לרענון מזג אוויר">
+          <div class="weather-pill-btn" onclick="fetchLiveWeather()" title="לחץ לרענון מזג אוויר">
             <span id="weatherIcon">☀️</span>
             <span id="weatherTemp">27°C</span>
           </div>
@@ -767,7 +732,7 @@
       <!-- Live Flight Countdown -->
       <div class="countdown-card">
         <div class="countdown-header">
-          <span>🛫 המראה מנתב"ג (IZ 141):</span>
+          <span>🛫 המראה מנתב"ג (ארקיע IZ 141):</span>
           <span style="direction:ltr; font-family:'Outfit'; font-weight:700; color:#fef08a;">11.09.2026 07:20</span>
         </div>
         <div class="countdown-digits-wrap" id="countdownTimer">
@@ -791,95 +756,141 @@
       </div>
     </header>
 
-    <!-- Quick info pills -->
-    <div class="trip-pills-bar">
-      <div class="status-pill">🏨 מלון: <strong>Alimounda Mare 5★</strong></div>
-      <div class="status-pill">🚗 רכב: <strong>איסוף בשדה</strong></div>
-      <div class="status-pill">💶 יתרה למלון: <strong>822 €</strong></div>
-      <div class="status-pill">✈️ טיסות: <strong>ארקיע IZ 141/142</strong></div>
+    <!-- Highlights Ticker -->
+    <div class="quick-stats-bar">
+      <div class="stat-pill">💶 שער יורו: <strong id="headerEurRate">~4.05 ₪</strong></div>
+      <div class="stat-pill">🚕 מונית שדה-מלון: <strong>~25-30 €</strong></div>
+      <div class="stat-pill">🏨 יתרה למלון: <strong>822 €</strong></div>
+      <div class="stat-pill">🌊 טמפ' מים: <strong>~25°C נעים</strong></div>
     </div>
 
     <!-- Navigation Tabs -->
     <nav class="tabs-nav">
-      <button class="tab-btn active" onclick="switchTab('tab-map', this)">🗺️ מפה ויעדים</button>
+      <button class="tab-btn active" onclick="switchTab('tab-recommend', this)">🌟 המלצות</button>
+      <button class="tab-btn" onclick="switchTab('tab-map', this)">🗺️ מפה וניווט</button>
       <button class="tab-btn" onclick="switchTab('tab-itinerary', this)">📅 טיסות ולו"ז</button>
-      <button class="tab-btn" onclick="switchTab('tab-wind', this)">💨 יועץ חופים</button>
+      <button class="tab-btn" onclick="switchTab('tab-money', this)">💶 שער ומוניות</button>
+      <button class="tab-btn" onclick="switchTab('tab-wind', this)">💨 מזג אוויר</button>
       <button class="tab-btn" onclick="switchTab('tab-expenses', this)">💰 הוצאות</button>
-      <button class="tab-btn" onclick="switchTab('tab-tools', this)">🛠️ שיחון וכלים</button>
     </nav>
 
-    <!-- TAB 1: מפה ויעדים -->
-    <section id="tab-map" class="tab-content active">
-      <div class="map-box">
-        <div id="map"></div>
-      </div>
-
-      <!-- קיצורי ניווט מהירים לטלפון (עובד תמיד גם ללא טעינת מפה!) -->
-      <div class="offline-map-banner">
-        <strong style="font-size:13px; color:var(--text-main);">📍 ניווט מהיר ישיר ליעדים ב-Google Maps:</strong>
-        <div class="map-quick-links">
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">🏨 מלון Alimounda Mare</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Karpathos+Airport+AOK">🛫 שדה תעופה (AOK)</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Diakoftis+Beach+Karpathos">🏖️ חוף דיאקופטיס (לילדים)</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Amoopi+Beach+Karpathos">🏖️ חוף אמופי (מוגן מרוח)</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Apella+Beach+Karpathos">🌊 חוף אפלה (היפה באי)</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Kyra+Panagia+Karpathos">⛪ מפרץ קירה פנאיה</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Olympos+Karpathos">🏛️ הכפר העתיק אולימפוס</a>
-          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Finiki+Karpathos">🐟 כפר הדייגים פיניקי</a>
-        </div>
-      </div>
-
-      <!-- מלון Alimounda Mare -->
+    <!-- TAB 1: המלצות וקניות (פייד גלילה / פיגאדיה, שמן זית, טברנות) -->
+    <section id="tab-recommend" class="tab-content active">
+      
+      <!-- פיגאדיה (פייד גלילה) ומוקדי חובה -->
       <article class="card">
         <div class="card-head">
           <div class="card-title-group">
-            <h2 class="card-title">מלון Alimounda Mare ⭐⭐⭐⭐⭐</h2>
-            <span class="card-subtitle">פיגאדיה (Pigadia) • חוף פרטי ובריכת אינסוף</span>
+            <h2 class="card-title">🏙️ עיר הבירה פיגאדיה (Pigadia)</h2>
+            <span class="card-subtitle">טיילת הנמל, בתי קפה, גלידריות וחיי לילה קסומים</span>
           </div>
-          <span class="badge badge-hotel">צ'ק-אין 14:00</span>
+          <span class="badge badge-hotel">במרחק פסיעה מהמלון</span>
         </div>
-
-        <div class="data-row">
-          <span>סוג חדר:</span>
-          <strong>Junior Suite (2 מבוגרים + ילד)</strong>
-        </div>
-        <div class="data-row">
-          <span>יתרה לתשלום במקום:</span>
-          <strong style="color:var(--accent-dark); font-size:14.5px;">822 € (כולל ארוחת בוקר)</strong>
-        </div>
-        <div class="data-row">
-          <span>הזמנה על שם:</span>
-          <strong>Hila Soceanu</strong>
-        </div>
-
+        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
+          פיגאדיה (בירת האי) היא המרכז השוקק של קרפאטוס, ומלון Alimounda Mare ממוקם ממש בקצה הטיילת שלה!
+          <br>• <strong>טיילת הנמל בערב:</strong> נסגרת לתנועת רכבים בערב והופכת למדרחוב רומנטי ושוקק עם טברנות דגים וגלידריות איטלקיות.
+          <br>• <strong>גלידת בוטיק מומלצת:</strong> גלידריית <em>Creperie & Gelato</em> בנמל.
+          <br>• <strong>טברנת To Helleniko:</strong> ארוחת ערב מסורתית מעולה (גירוס, צזיקי, גבינת פטה אפויה בדבש ושומשום).
+          <br>• <strong>Pelagos Music Bar:</strong> מוזיקה יוונית חיה אמיתית עם בוזוקי ויין מקומי.
+        </p>
         <div class="btn-row">
-          <a class="btn btn-booking" target="_blank" href="https://www.booking.com/hotel/gr/alimounda-mare.html">🔗 Booking</a>
-          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">📍 ניווט</a>
-          <a class="btn btn-outline" href="tel:+302242029551">📞 קבלה</a>
+          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Pigadia+Port+Karpathos">📍 ניווט לטיילת פיגאדיה</a>
+          <a class="btn btn-outline" target="_blank" href="https://maps.google.com/?q=To+Helleniko+Pigadia+Karpathos">🍴 טברנת To Helleniko</a>
         </div>
       </article>
 
-      <!-- שייט יומי מנמל פיגאדיה -->
+      <!-- מה מומלץ לקנות ושמן זית -->
       <article class="card">
         <div class="card-head">
           <div class="card-title-group">
-            <h2 class="card-title">שייט יומי מנמל פיגאדיה ⛵</h2>
-            <span class="card-subtitle">10 דק' הליכה לאורך הטיילת</span>
+            <h2 class="card-title">🛍️ מה מומלץ לקנות בקרפאטוס?</h2>
+            <span class="card-subtitle">תוצרת אותנטית ומזכרות ייחודיות לאי</span>
           </div>
-          <span class="badge badge-wind">חוויה מומלצת</span>
+          <span class="badge badge-food">מוצרי איכות</span>
         </div>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:6px 0 10px;">
-          בכל בוקר סביב 10:00 יוצאות סירות מהנמל:
-          <br>1. <strong>האי סאריה (Saria Island):</strong> שמורת טבע בצפון, מערות ים וחורבות שודדי ים.
-          <br>2. <strong>מונית-ים לחופים (Sea Taxi):</strong> הגעה ימית ישירה לאפלה ולקירה פנאיה.
-        </p>
-        <div class="btn-row">
-          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Port+of+Pigadia+Karpathos">📍 מיקום הנמל במפה</a>
+
+        <div class="shopping-item">
+          <div class="shop-icon">🫒</div>
+          <div style="font-size:13px; line-height:1.4;">
+            <strong>שמן זית מקומי כתית מעולה (Extra Virgin):</strong><br>
+            חפשו שמן זית מזן <em>Koroneiki</em> בכבישה קרה (חמיצות מתחת ל-0.4%). המקומיים מפיקים אותו ממטעי הזיתים ההרריים. מומלץ לקנות בפחים קטנים של 1 או 2 ליטר בחנויות המכולת המקומיות בפיגאדיה או בכפר מנטס (Menetes).
+          </div>
+        </div>
+
+        <div class="shopping-item">
+          <div class="shop-icon">🍯</div>
+          <div style="font-size:13px; line-height:1.4;">
+            <strong>דבש טימין פראי (Thymarisio Meli):</strong><br>
+            דבש עטור פרסים המופק משיחי הטימין והאורגנו הגדלים על צלעות ההרים. טעם עמוק וארומטי במיוחד – מתנה מושלמת לקחת הביתה.
+          </div>
+        </div>
+
+        <div class="shopping-item">
+          <div class="shop-icon">🍝</div>
+          <div style="font-size:13px; line-height:1.4;">
+            <strong>פסטת מקרונס מקומית (Makarounes):</strong><br>
+            פסטה ביתית קצרה מגולגלת ביד, הנמכרת יבשה בחנויות. בטברנות מגישים אותה עם בצל מקורמל וגבינת Sitaka מקומית.
+          </div>
+        </div>
+
+        <div class="shopping-item">
+          <div class="shop-icon">🌿</div>
+          <div style="font-size:13px; line-height:1.4;">
+            <strong>עשבי תיבול הרריים (אורגנו ומרווה Faskomilo):</strong><br>
+            מיובשים בשמש ההררית. האורגנו היווני בעל ארומה מרוכזת פי כמה מהרגיל.
+          </div>
+        </div>
+
+        <div class="shopping-item">
+          <div class="shop-icon">🥿</div>
+          <div style="font-size:13px; line-height:1.4;">
+            <strong>מזכרות ועבודות יד מהכפר אולימפוס (Olympos):</strong><br>
+            רקמות מסורתיות, מגשי קרמיקה צבעוניים וכפכפי עור עבודת יד של סנדלרי הכפר.
+          </div>
+        </div>
+      </article>
+
+      <!-- פנינים נסתרות שאסור לפספס -->
+      <article class="card">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">💎 פנינים נסתרות (Hidden Gems)</h2>
+            <span class="card-subtitle">מקומות ששווה להוסיף למסלול</span>
+          </div>
+          <span class="badge badge-tip">המלצות סודיות</span>
+        </div>
+        <div style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+          • <strong>כפר הדייגים פיניקי (Finiki):</strong> בצד המערבי. מושלם לארוחת דגים טריים וקלמרי מול שקיעה עוצרת נשימה.<br>
+          • <strong>כפר מנטס (Menetes):</strong> כפר מדורג בדרך לשדה עם בתי פסטל צבעוניים ותצפית מרהיבה על כל מפרץ פיגאדיה.<br>
+          • <strong>חוף אכאטה (Achata):</strong> מפרץ קטן וסודי בין אפלה לפיגאדיה עם חלוקי נחל ומים צלולים כשמשה.
         </div>
       </article>
     </section>
 
-    <!-- TAB 2: טיסות ולוח זמנים -->
+    <!-- TAB 2: מפה וניווט -->
+    <section id="tab-map" class="tab-content">
+      <div class="map-box">
+        <div id="map"></div>
+      </div>
+
+      <div class="card">
+        <strong style="font-size:13px; color:var(--text-main);">📍 קיצורי ניווט מהירים ב-Google Maps:</strong>
+        <div class="map-quick-grid">
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Alimounda+Mare+Hotel+Karpathos">🏨 מלון Alimounda</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Karpathos+Airport+AOK">🛫 שדה תעופה (AOK)</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Port+of+Pigadia+Karpathos">⛵ נמל פיגאדיה</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Diakoftis+Beach+Karpathos">🏖️ חוף דיאקופטיס</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Amoopi+Beach+Karpathos">🏖️ חוף אמופי</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Apella+Beach+Karpathos">🌊 חוף אפלה</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Kyra+Panagia+Karpathos">⛪ קירה פנאיה</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Olympos+Karpathos">🏛️ הכפר אולימפוס</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Finiki+Karpathos">🐟 כפר הדייגים פיניקי</a>
+          <a class="map-quick-link" target="_blank" href="https://maps.google.com/?q=Menetes+Karpathos">🏘️ כפר מנטס</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: טיסות ולוח זמנים -->
     <section id="tab-itinerary" class="tab-content">
       <article class="card">
         <div class="card-head">
@@ -904,13 +915,13 @@
         </div>
         <div class="data-row">
           <span>🛫 הלוך (11/09):</span>
-          <div style="text-align:left; direction:ltr;">
+          <div style="direction:ltr; text-align:left;">
             <strong style="color:var(--primary);">IZ 141</strong> | 07:20 TLV $\to$ 08:55 AOK
           </div>
         </div>
         <div class="data-row">
           <span>🛬 חזור (14/09):</span>
-          <div style="text-align:left; direction:ltr;">
+          <div style="direction:ltr; text-align:left;">
             <strong style="color:var(--primary);">IZ 142</strong> | 11:00 AOK $\to$ 12:25 TLV
           </div>
         </div>
@@ -920,16 +931,16 @@
         </div>
       </article>
 
-      <!-- לו"ז יומי -->
-      <h3 style="font-size:15.5px; font-weight:900; margin:14px 0 8px;">📅 תוכנית המסע לפי ימים (לחצו לפתיחה)</h3>
+      <!-- לו"ז 4 ימים -->
+      <h3 style="font-size:15px; font-weight:900; margin:14px 0 8px;">📅 תוכנית יומית מומלצת</h3>
 
       <div class="day-card open">
         <div class="day-header" onclick="toggleDay(this)">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="day-circle">1</div>
             <div>
-              <strong style="font-size:14px;">שישי (11.09): נחיתה ופיגאדיה</strong>
-              <div style="font-size:11.5px; color:var(--text-muted);">איסוף רכב, מלון וטברנת To Helleniko</div>
+              <strong style="font-size:14px;">שישי (11.09): נחיתה והתמקמות</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">איסוף רכב, קפה בנמל, צ'ק-אין וטברנה בערב</div>
             </div>
           </div>
           <span>▼</span>
@@ -937,19 +948,19 @@
         <div class="day-content">
           <div class="itinerary-step">
             <div class="itinerary-time">08:55</div>
-            <div><strong>נחיתה בשדה AOK</strong> - איסוף רכב שכור ונסיעה של 20 דק' לפיגאדיה.</div>
+            <div><strong>נחיתה בקרפאטוס (AOK)</strong> - איסוף רכב שכור ונסיעה של 20 דק' לפיגאדיה.</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">10:30</div>
-            <div><strong>קפה בנמל פיגאדיה</strong> - עצירת התרעננות בטיילת מול המרינה.</div>
+            <div><strong>קפה וגלידה בנמל פיגאדיה</strong> - טיילת הנמל מול המפרץ.</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">14:00</div>
-            <div><strong>צ'ק-אין במלון Alimounda Mare 5★</strong> - בריכה, חוף ומנוחה.</div>
+            <div><strong>צ'ק-אין במלון Alimounda Mare 5★</strong> - חדר Junior Suite, בריכת אינסוף וחוף פרטי.</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">19:30</div>
-            <div><strong>ארוחת ערב בטברנת To Helleniko</strong> - אוכל מסורתי מעולה בלב העיר.</div>
+            <div><strong>טברנת To Helleniko</strong> - ארוחת ערב יוונית משובחת בלב פיגאדיה.</div>
           </div>
         </div>
       </div>
@@ -968,7 +979,7 @@
         <div class="day-content">
           <div class="itinerary-step">
             <div class="itinerary-time">09:30</div>
-            <div><strong>חוף אפלה (Apella Beach)</strong> - מי טורקיז מהיפים באירופה. מומלץ להקדים לפני 10:30.</div>
+            <div><strong>חוף אפלה (Apella Beach)</strong> - מי טורקיז מהיפים באירופה (להגיע לפני 10:30).</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">13:30</div>
@@ -976,7 +987,7 @@
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">20:30</div>
-            <div><strong>מוזיקה חיה ב-Pelagos</strong> - חוויה יוונית שמחה עם בוזוקי.</div>
+            <div><strong>מוזיקה חיה ב-Pelagos</strong> - חוויה יוונית שמחה עם בוזוקי בפיגאדיה.</div>
           </div>
         </div>
       </div>
@@ -986,8 +997,8 @@
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="day-circle">3</div>
             <div>
-              <strong style="font-size:14px;">ראשון (13.09): הכפר אולימפוס ושקיעה בפיניקי</strong>
-              <div style="font-size:11.5px; color:var(--text-muted);">פולקלור הררי, טחנות רוח וטברנת דגים</div>
+              <strong style="font-size:14px;">ראשון (13.09): אולימפוס ושקיעה בפיניקי</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">הכפר ההיסטורי, טחנות רוח וטברנת דגים</div>
             </div>
           </div>
           <span>▼</span>
@@ -995,11 +1006,11 @@
         <div class="day-content">
           <div class="itinerary-step">
             <div class="itinerary-time">10:00</div>
-            <div><strong>סיור בכפר ההיסטורי אולימפוס (Olympos)</strong> - מאפיית לחם מסורתית ומקרונס מקומיים.</div>
+            <div><strong>נסיעה פנורמית לאולימפוס (Olympos)</strong> - כפר נשים היסטורי, מאפיית לחם עתיקה ועבודות יד.</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">16:30</div>
-            <div><strong>ירידה לכפר פיניקי (Finiki)</strong> - שקיעה מרהיבה במערב וטברנת דגים על קו המים.</div>
+            <div><strong>ירידה לפיניקי (Finiki)</strong> - שקיעה מרהיבה על הים וטברנת דגים טריים.</div>
           </div>
         </div>
       </div>
@@ -1009,8 +1020,8 @@
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="day-circle">4</div>
             <div>
-              <strong style="font-size:14px;">שני (14.09): טבילה בדיאקופטיס והמראה</strong>
-              <div style="font-size:11.5px; color:var(--text-muted);">צ'ק אאוט, רחצה קצרה וטיסה IZ 142 ב-11:00</div>
+              <strong style="font-size:14px;">שני (14.09): דיאקופטיס והמראה הביתה</strong>
+              <div style="font-size:11.5px; color:var(--text-muted);">צ'ק-אאוט, טבילה רדודה והמראה ב-11:00</div>
             </div>
           </div>
           <span>▼</span>
@@ -1018,89 +1029,96 @@
         <div class="day-content">
           <div class="itinerary-step">
             <div class="itinerary-time">07:30</div>
-            <div><strong>ארוחת בוקר וצ'ק אאוט</strong> - תשלום יתרה במלון ויציאה לשדה.</div>
+            <div><strong>ארוחת בוקר וצ'ק-אאוט</strong> במלון (תשלום יתרה 822 €).</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">08:15</div>
-            <div><strong>טבילת בוקר בחוף דיאקופטיס</strong> - 5 דקות משדה התעופה!</div>
+            <div><strong>טבילת בוקר בדיאקופטיס</strong> - חול לבן 5 דקות משדה התעופה.</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">09:30</div>
-            <div><strong>החזרת רכב שכור בשדה AOK</strong> וצ'ק-אין לטיסת ארקיע IZ 142 (המראה ב-11:00).</div>
+            <div><strong>החזרת רכב שכור בשדה AOK</strong> וצ'ק-אין לטיסת ארקיע IZ 142.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TAB 3: יועץ רוח וחופים -->
-    <section id="tab-wind" class="tab-content">
-      <div class="wind-banner">
-        <div class="wind-title">💨 יועץ רוחות המלטמי (Meltemi)</div>
+    <!-- TAB 4: שער היורו ומוניות -->
+    <section id="tab-money" class="tab-content">
+      
+      <!-- מחשבון שער יורו-שקל -->
+      <div class="converter-card">
+        <div class="card-title-group">
+          <h2 class="card-title" style="color:#0369a1;">💶 מחשבון שער יורו $\leftrightarrow$ שקל</h2>
+          <span class="card-subtitle">שער נוכחי משוער: 1 € = 4.05 ₪</span>
+        </div>
+
+        <div class="calc-row">
+          <input type="number" id="eurInput" class="calc-input" value="10" oninput="convertEurToIls(this.value)">
+          <span style="font-size:18px; font-weight:800;">€</span>
+          <span style="font-size:18px; font-weight:800;">=</span>
+          <span class="calc-res" id="ilsOutput">40.50 ₪</span>
+        </div>
+
+        <div class="quick-conv-table">
+          <div class="quick-conv-item"><strong>5 €</strong><br>~20 ₪</div>
+          <div class="quick-conv-item"><strong>20 €</strong><br>~81 ₪</div>
+          <div class="quick-conv-item"><strong>50 €</strong><br>~203 ₪</div>
+          <div class="quick-conv-item"><strong>100 €</strong><br>~405 ₪</div>
+        </div>
+
+        <div style="margin-top:10px; font-size:12px; background:rgba(255,255,255,0.7); padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.06);">
+          🏨 <strong>יתרת המלון לתשלום במקום:</strong> 822 € = <strong style="color:#0284c7;">כ-3,329 ₪</strong>
+        </div>
+      </div>
+
+      <!-- עלויות מוניות ותחבורה באי -->
+      <div class="taxi-card">
+        <div class="card-title-group" style="margin-bottom:8px;">
+          <h2 class="card-title" style="color:#92400e;">🚕 עלויות מונית ותחבורה משדה התעופה</h2>
+          <span class="card-subtitle">שדה AOK ⬅ למלון Alimounda Mare בפיגאדיה</span>
+        </div>
         <div style="font-size:13px; color:inherit; line-height:1.5;">
-          רוח המלטמי נושבת בעיקר מצפון.
-          <br><strong>כלל הברזל:</strong> כשיש רוח צפונית מעל 25 קמ"ש, המפרצים המזרחיים (אמופי, אפלה, קירה פנאיה) נשארים מוגנים ורגועים, בעוד החופים הצפוניים והמערביים גליים!
+          • <strong>מרחק וזמן נסיעה:</strong> כ-17 ק"מ (כ-20 דקות נסיעה בכביש ראשי סלול ונוח).<br>
+          • <strong>תעריף מונית רשמי:</strong> <strong>25 € עד 30 €</strong> לכיוון (עבור מונית רגילה עד 4 נוסעים).<br>
+          • <strong>ל-6 נוסעים:</strong> מונית אחת לא תספיק – יש צורך ב-2 מוניות (~55-60 € סה"כ) או בהזמנת מיניוואן מראש, <strong>או הכי משתלם: איסוף הרכבים השכורים ישירות בשדה התעופה</strong> (כפי שמתוכנן בלו"ז).<br>
+          • <strong>תחנת מוניות בפיגאדיה:</strong> ממוקמת ליד הנמל, טלפון להזמנה: <a href="tel:+302245022705" style="color:var(--primary); font-weight:bold;">+30 22450 22705</a>.
         </div>
       </div>
-
-      <article class="card">
-        <div class="card-head">
-          <div class="card-title-group">
-            <h2 class="card-title">חוף דיאקופטיס (Diakoftis) 🏖️</h2>
-            <span class="card-subtitle">דרום האי (5 דק' מהשדה)</span>
-          </div>
-          <span class="badge badge-kids">👶 חלום לילדים</span>
-        </div>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
-          "המלדיביים של יוון" - חול לבן דק, מים רדודים בגובה הברכיים לעשרות מטרים. בטוח ומושלם לקטנטנים.
-        </p>
-        <div class="btn-row">
-          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Diakoftis+Beach+Karpathos">📍 ניווט ב-Maps</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-head">
-          <div class="card-title-group">
-            <h2 class="card-title">חוף אמופי (Amoopi Beach) 🏖️</h2>
-            <span class="card-subtitle">7 דקות נסיעה דרומית למלון</span>
-          </div>
-          <span class="badge badge-kids">👶 מוגן לחלוטין מרוחות</span>
-        </div>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
-          מפרץ טבעי סגור, מים צלולים ורגועים גם בימים סוערים. חוף חולי נוח מאוד עם טברנות ושמשיות.
-        </p>
-        <div class="btn-row">
-          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Amoopi+Beach+Karpathos">📍 ניווט ב-Maps</a>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="card-head">
-          <div class="card-title-group">
-            <h2 class="card-title">חוף אפלה (Apella Beach) 🌊</h2>
-            <span class="card-subtitle">מהחופים היפים באירופה</span>
-          </div>
-          <span class="badge badge-wind">עוצר נשימה</span>
-        </div>
-        <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin:4px 0 10px;">
-          מי טורקיז עמוקים בין מצוקי אורן. מומלץ להביא נעלי מים ושנורקל.
-        </p>
-        <div class="btn-row">
-          <a class="btn btn-primary" target="_blank" href="https://maps.google.com/?q=Apella+Beach+Karpathos">📍 ניווט ב-Maps</a>
-        </div>
-      </article>
     </section>
 
-    <!-- TAB 4: מחשבון הוצאות -->
-    <section id="tab-expenses" class="tab-content">
+    <!-- TAB 5: מזג אוויר ורוחות -->
+    <section id="tab-wind" class="tab-content">
       <div class="card">
         <div class="card-head">
           <div class="card-title-group">
-            <h2 class="card-title">💰 מעקב וחלוקת הוצאות משותפות</h2>
-            <span class="card-subtitle">ניהול קופה משותפת ל-6 הנוסעים</span>
+            <h2 class="card-title">☀️ תנאי מזג האוויר בקרפאטוס (ספטמבר)</h2>
+            <span class="card-subtitle">אחת התקופות הטובות ביותר בשנה לביקור!</span>
           </div>
+          <span class="badge badge-kids">אידיאלי לרחצה</span>
         </div>
+        <div style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+          • <strong>טמפרטורת יום:</strong> 26°C - 29°C עם שמיים כחולים ושמש מובטחת.<br>
+          • <strong>טמפרטורת הים:</strong> כ-<strong>25°C</strong> – המים חמים ונעימים מאוד לאחר חודשי הקיץ.<br>
+          • <strong>שעות שחייה אידיאליות:</strong> שעות הבוקר (09:00 עד 13:00) הן השעות הכי רגועות בים, לפני שהרוח מתחזקת בצהריים.<br>
+          • <strong>קרינת שמש:</strong> השמש חזקה מאוד גם בספטמבר – חובה קרם הגנה וכובעים לילדים.
+        </div>
+      </div>
 
+      <div class="card" style="border-left:4px solid var(--primary);">
+        <h3 style="font-size:15px; font-weight:800; color:var(--primary); margin-bottom:6px;">💨 רוח המלטמי (Meltemi) - חוקי האצבע:</h3>
+        <div style="font-size:13px; color:var(--text-muted); line-height:1.5;">
+          • הרוח נושבת לרוב מצפון-מערב.<br>
+          • <strong>ביום עם רוח חזקה:</strong> סעו לחופים המזרחיים המוגנים ע"י רכס ההרים הגבוה (אמופי, אפלה, קירה פנאיה, אכאטה) – שם הים נשאר חלק כמו מראה!<br>
+          • <strong>לילדים:</strong> חוף דיאקופטיס (בדרום ליד השדה) וחוף אמופי (7 דק' מהמלון) הם הבטוחים והנוחים ביותר.
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: מחשבון הוצאות -->
+    <section id="tab-expenses" class="tab-content">
+      <div class="card">
+        <h2 class="card-title" style="margin-bottom:10px;">💰 רישום הוצאה משותפת</h2>
         <div class="expense-grid">
           <input type="text" id="expDesc" placeholder="עבור מה? (טברנה, דלק, קניות)">
           <input type="number" id="expAmount" placeholder="סכום (€)" min="1" step="any">
@@ -1116,127 +1134,18 @@
         <div id="expenseList"></div>
 
         <div class="data-row" style="margin-top:12px; font-weight:800; font-size:15px;">
-          <span>סה"כ הוצאות שנרשמו:</span>
+          <span>סה"כ הוצאות:</span>
           <span id="totalExpenses" style="color:var(--primary); font-size:17px;">0 €</span>
         </div>
 
-        <div class="settlement-box" id="settlementBox">
-          <strong>💡 חלוקה שווה ל-3 נציגים:</strong>
-          <div id="settlementDetails" style="margin-top:4px;">טרם נרשמו הוצאות.</div>
+        <div id="settlementBox" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:10px; margin-top:10px; font-size:12px; color:#166534;">
+          <strong>💡 חלוקה ממוצעת ל-3:</strong>
+          <div id="settlementDetails">טרם נרשמו הוצאות.</div>
         </div>
 
         <div style="display:flex; justify-content:space-between; margin-top:12px;">
-          <button onclick="clearExpenses()" style="background:none; border:none; color:var(--danger); font-size:12px; font-weight:700; cursor:pointer;">
-            🗑️ איפוס הוצאות
-          </button>
-          <button onclick="exportExpenses()" style="background:none; border:none; color:var(--primary); font-size:12px; font-weight:700; cursor:pointer;">
-            📋 העתק סיכום לוואטסאפ
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 5: חירום ושיחון יוונית -->
-    <section id="tab-tools" class="tab-content">
-      <div class="card">
-        <h2 class="card-title" style="margin-bottom:10px;">🚨 אנשי קשר ומוקדי חירום</h2>
-        <div class="data-row">
-          <span>המרכז הרפואי / בי"ח (פיגאדיה):</span>
-          <a href="tel:+302245022228" class="copy-chip">📞 +30 22450 22228</a>
-        </div>
-        <div class="data-row">
-          <span>מוקד חירום אירופי (משטרה/אמבולנס):</span>
-          <a href="tel:112" class="copy-chip">📞 112</a>
-        </div>
-        <div class="data-row">
-          <span>תחנת משטרת קרפאטוס:</span>
-          <a href="tel:+302245022222" class="copy-chip">📞 +30 22450 22222</a>
-        </div>
-        <div class="data-row">
-          <span>קבלה במלון Alimounda Mare:</span>
-          <a href="tel:+302242029551" class="copy-chip">📞 +30 22420 29551</a>
-        </div>
-      </div>
-
-      <!-- שיחון יוונית -->
-      <div class="card">
-        <div class="card-head">
-          <div class="card-title-group">
-            <h2 class="card-title">🇬🇷 שיחון יוונית מקומי</h2>
-            <span class="card-subtitle">לחצו על 🔊 להשמעת הגייה יוונית</span>
-          </div>
-        </div>
-
-        <div class="phrase-grid">
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Kalimera (קלימרה)</span>
-              <button class="speak-btn" onclick="speakGreek('Καλημέρα')">🔊</button>
-            </div>
-            <div class="phrase-heb">בוקר טוב</div>
-          </div>
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Efcharisto (אפחריסטו)</span>
-              <button class="speak-btn" onclick="speakGreek('Ευχαριστώ')">🔊</button>
-            </div>
-            <div class="phrase-heb">תודה רבה</div>
-          </div>
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Parakalo (פאראקאלו)</span>
-              <button class="speak-btn" onclick="speakGreek('Παρακαλώ')">🔊</button>
-            </div>
-            <div class="phrase-heb">בבקשה / על לא דבר</div>
-          </div>
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Ton logariasmo (טון לוגריאזמו)</span>
-              <button class="speak-btn" onclick="speakGreek('Τον λογαριασμό παρακαλώ')">🔊</button>
-            </div>
-            <div class="phrase-heb">אפשר חשבון?</div>
-          </div>
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Nero (נרו)</span>
-              <button class="speak-btn" onclick="speakGreek('Νερό')">🔊</button>
-            </div>
-            <div class="phrase-heb">מים</div>
-          </div>
-          <div class="phrase-card">
-            <div class="phrase-gr">
-              <span>Yamas! (יאמאס!)</span>
-              <button class="speak-btn" onclick="speakGreek('Στην υγειά μας')">🔊</button>
-            </div>
-            <div class="phrase-heb">לחיים!</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- צ'ק-ליסט -->
-      <div class="card">
-        <h2 class="card-title" style="margin-bottom:8px;">🎒 צ'ק-ליסט ציוד והכנות</h2>
-        <div id="checklistContainer">
-          <label class="check-item">
-            <input type="checkbox" onchange="toggleCheck(this, 'c1')" id="c1">
-            <span>דרכונים בתוקף (לפחות 3 חודשים)</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" onchange="toggleCheck(this, 'c2')" id="c2">
-            <span>רישיון נהיגה ישראלי / בינלאומי פלסטיק</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" onchange="toggleCheck(this, 'c3')" id="c3">
-            <span>נעלי מים (חשוב לחלוקי נחל באפלה)</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" onchange="toggleCheck(this, 'c4')" id="c4">
-            <span>משקפות ושנורקלים</span>
-          </label>
-          <label class="check-item">
-            <input type="checkbox" onchange="toggleCheck(this, 'c5')" id="c5">
-            <span>ביטוח נסיעות לחו"ל פעיל</span>
-          </label>
+          <button onclick="clearExpenses()" style="background:none; border:none; color:var(--danger); font-size:12px; font-weight:700; cursor:pointer;">🗑️ איפוס הוצאות</button>
+          <button onclick="exportExpenses()" style="background:none; border:none; color:var(--primary); font-size:12px; font-weight:700; cursor:pointer;">📋 העתק סיכום לוואטסאפ</button>
         </div>
       </div>
     </section>
@@ -1244,24 +1153,28 @@
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-bar">
       <button class="bar-item active" onclick="triggerTabByIndex(0)">
+        <span class="bar-item-icon">🌟</span>
+        <span>המלצות</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(1)">
         <span class="bar-item-icon">🗺️</span>
         <span>מפה</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(1)">
+      <button class="bar-item" onclick="triggerTabByIndex(2)">
         <span class="bar-item-icon">📅</span>
         <span>לו"ז</span>
       </button>
-      <button class="bar-item" onclick="triggerTabByIndex(2)">
-        <span class="bar-item-icon">💨</span>
-        <span>חופים</span>
-      </button>
       <button class="bar-item" onclick="triggerTabByIndex(3)">
-        <span class="bar-item-icon">💰</span>
-        <span>הוצאות</span>
+        <span class="bar-item-icon">💶</span>
+        <span>שער/מונית</span>
       </button>
       <button class="bar-item" onclick="triggerTabByIndex(4)">
-        <span class="bar-item-icon">🛠️</span>
-        <span>כלים</span>
+        <span class="bar-item-icon">💨</span>
+        <span>מזג אוויר</span>
+      </button>
+      <button class="bar-item" onclick="triggerTabByIndex(5)">
+        <span class="bar-item-icon">💰</span>
+        <span>הוצאות</span>
       </button>
     </div>
 
@@ -1339,7 +1252,7 @@
       const target = document.getElementById(tabId);
       if (target) target.classList.add('active');
 
-      const tabOrder = ['tab-map', 'tab-itinerary', 'tab-wind', 'tab-expenses', 'tab-tools'];
+      const tabOrder = ['tab-recommend', 'tab-map', 'tab-itinerary', 'tab-money', 'tab-wind', 'tab-expenses'];
       const index = tabOrder.indexOf(tabId);
       if (index !== -1) {
         const bottomBtns = document.querySelectorAll('.bar-item');
@@ -1361,7 +1274,19 @@
       header.parentElement.classList.toggle('open');
     }
 
-    /* 4. Leaflet Map with Safe Fallback */
+    /* 4. Currency Converter */
+    const EUR_ILS_RATE = 4.05;
+    function convertEurToIls(eurVal) {
+      const eur = parseFloat(eurVal);
+      const out = document.getElementById('ilsOutput');
+      if (isNaN(eur) || eur < 0) {
+        out.innerText = '0.00 ₪';
+        return;
+      }
+      out.innerText = `${(eur * EUR_ILS_RATE).toFixed(2)} ₪`;
+    }
+
+    /* 5. Leaflet Map with Safe Fallback */
     let map = null;
     function initMap() {
       try {
@@ -1371,25 +1296,26 @@
 
           const locs = [
             { name: "Alimounda Mare 5★", coords: [35.5095, 27.2061] },
-            { name: "שדה תעופה (AOK)", coords: [35.4214, 27.1460] },
+            { name: "שדה תעופה קרפאטוס (AOK)", coords: [35.4214, 27.1460] },
+            { name: "נמל פיגאדיה וטיילת", coords: [35.5075, 27.2132] },
             { name: "חוף דיאקופטיס (לילדים)", coords: [35.4055, 27.1650] },
             { name: "חוף אמופי (מוגן מרוח)", coords: [35.4740, 27.1950] },
-            { name: "חוף אפלה (מי טורקיז)", coords: [35.6033, 27.1568] },
-            { name: "הכפר אולימפוס", coords: [35.7422, 27.1786] },
-            { name: "פיניקי (דגים ושקיעה)", coords: [35.4912, 27.1170] }
+            { name: "חוף אפלה (טורקיז)", coords: [35.6033, 27.1568] },
+            { name: "הכפר ההיסטורי אולימפוס", coords: [35.7422, 27.1786] },
+            { name: "כפר הדייגים פיניקי", coords: [35.4912, 27.1170] }
           ];
 
           locs.forEach(l => {
-            L.marker(l.coords).addTo(map).bindPopup(`<b>${l.name}</b><br><a href="https://maps.google.com/?q=${l.coords[0]},${l.coords[1]}" target="_blank">ניווט במפה</a>`);
+            L.marker(l.coords).addTo(map).bindPopup(`<b>${l.name}</b><br><a href="https://maps.google.com/?q=${l.coords[0]},${l.coords[1]}" target="_blank">ניווט ישיר</a>`);
           });
         }
       } catch (e) {
-        console.log("Map offline fallback active");
+        console.log("Map offline mode active");
       }
     }
     window.addEventListener('DOMContentLoaded', initMap);
 
-    /* 5. Live Weather */
+    /* 6. Live Weather */
     async function fetchLiveWeather() {
       try {
         const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.5095&longitude=27.2061&current_weather=true");
@@ -1401,8 +1327,8 @@
     }
     fetchLiveWeather();
 
-    /* 6. Expenses & Fair Share */
-    let expenses = JSON.parse(localStorage.getItem('karpathos_expenses_v2') || '[]');
+    /* 7. Expenses */
+    let expenses = JSON.parse(localStorage.getItem('karpathos_expenses_v3') || '[]');
 
     function renderExpenses() {
       const list = document.getElementById('expenseList');
@@ -1415,7 +1341,7 @@
       let payers = { 'אביב': 0, 'הילה': 0, 'ידידיה': 0, 'אחר': 0 };
 
       if (expenses.length === 0) {
-        list.innerHTML = '<div style="color:var(--text-muted); font-size:12.5px; text-align:center; padding:10px;">טרם נרשמו הוצאות.</div>';
+        list.innerHTML = '<div style="color:var(--text-muted); font-size:12.5px; text-align:center; padding:8px;">טרם נרשמו הוצאות.</div>';
       }
 
       expenses.forEach((item, index) => {
@@ -1459,7 +1385,7 @@
       }
 
       expenses.push({ desc, amount, payer });
-      localStorage.setItem('karpathos_expenses_v2', JSON.stringify(expenses));
+      localStorage.setItem('karpathos_expenses_v3', JSON.stringify(expenses));
       document.getElementById('expDesc').value = '';
       document.getElementById('expAmount').value = '';
       renderExpenses();
@@ -1468,14 +1394,14 @@
 
     function deleteExpense(index) {
       expenses.splice(index, 1);
-      localStorage.setItem('karpathos_expenses_v2', JSON.stringify(expenses));
+      localStorage.setItem('karpathos_expenses_v3', JSON.stringify(expenses));
       renderExpenses();
     }
 
     function clearExpenses() {
       if (confirm('לאפס את כל ההוצאות?')) {
         expenses = [];
-        localStorage.removeItem('karpathos_expenses_v2');
+        localStorage.removeItem('karpathos_expenses_v3');
         renderExpenses();
       }
     }
@@ -1493,38 +1419,7 @@
     }
     renderExpenses();
 
-    /* 7. Greek Pronunciation */
-    function speakGreek(phrase) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(phrase);
-        u.lang = 'el-GR';
-        u.rate = 0.9;
-        window.speechSynthesis.speak(u);
-        showToast(`משמיע: ${phrase}`, '🔊');
-      } else {
-        showToast(phrase, '🇬🇷');
-      }
-    }
-
-    /* 8. Checklist */
-    const savedChecks = JSON.parse(localStorage.getItem('karpathos_checks') || '{}');
-    Object.keys(savedChecks).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.checked = savedChecks[id];
-        if (savedChecks[id]) el.parentElement.classList.add('done');
-      }
-    });
-
-    function toggleCheck(checkbox, id) {
-      savedChecks[id] = checkbox.checked;
-      localStorage.setItem('karpathos_checks', JSON.stringify(savedChecks));
-      if (checkbox.checked) checkbox.parentElement.classList.add('done');
-      else checkbox.parentElement.classList.remove('done');
-    }
-
-    /* 9. Dark Mode */
+    /* 8. Dark Mode */
     function toggleTheme() {
       const isDark = document.body.getAttribute('data-theme') === 'dark';
       if (isDark) {
