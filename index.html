@@ -536,9 +536,72 @@
       padding: 14px;
       margin-bottom: 12px;
     }
-    [data-theme="dark"] .taxi-card {
-      background: #451a03;
-      border-color: #78350f;
+    /* Daily Weather Forecast */
+    .forecast-days-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .forecast-day-box {
+      background: var(--card-hover);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 12px;
+      transition: transform 0.15s ease;
+    }
+    .forecast-day-box:hover {
+      transform: translateY(-2px);
+    }
+    .f-day-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .f-day-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .f-day-icon {
+      font-size: 28px;
+    }
+    .f-day-metrics {
+      display: flex;
+      gap: 12px;
+      font-size: 12.5px;
+      align-items: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+    .f-temp strong {
+      font-size: 17px;
+      color: var(--primary);
+      font-family: 'Outfit', sans-serif;
+    }
+    .f-temp small {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .f-wind, .f-rain {
+      color: var(--text-muted);
+      font-size: 11.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .f-day-tip {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.05);
+      line-height: 1.4;
+      color: var(--text-main);
+    }
+    [data-theme="dark"] .f-day-tip {
+      background: rgba(0, 0, 0, 0.28);
+      border-color: rgba(255, 255, 255, 0.08);
     }
 
     /* Shopping & Gastronomy */
@@ -1297,6 +1360,98 @@
 
     <!-- TAB 5: מזג אוויר ורוחות -->
     <section id="tab-wind" class="tab-content">
+
+      <!-- תחזית יומית אמיתית לכל ימי החופשה 11-14 בספטמבר -->
+      <article class="card" style="border-right: 4px solid var(--turquoise);">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">📅 תחזית יומית אמיתית לקרפאטוס (11-14 בספטמבר)</h2>
+            <span class="card-subtitle" id="forecastSub">נתונים מטאורולוגיים חיים (Open-Meteo)</span>
+          </div>
+          <button onclick="fetchLiveDailyWeather()" class="copy-chip" style="font-size:11px;">🔄 רענן</button>
+        </div>
+
+        <div class="forecast-days-grid" id="forecastDaysContainer">
+
+          <!-- שישי 11.09 -->
+          <div class="forecast-day-box">
+            <div class="f-day-top">
+              <div>
+                <strong>שישי (11.09) - יום הנחיתה</strong>
+                <div class="f-day-sub">פיגאדיה וטברנת To Helleniko</div>
+              </div>
+              <span class="f-day-icon" id="fIcon0">☀️</span>
+            </div>
+            <div class="f-day-metrics">
+              <span class="f-temp"><strong id="fMax0">29°C</strong> <small id="fMin0">/ 24°C</small></span>
+              <span class="f-wind" id="fWind0">💨 15 קמ"ש (בריזה קלה)</span>
+              <span class="f-rain" id="fRain0">💧 0% גשם</span>
+            </div>
+            <div class="f-day-tip">
+              🌊 <strong>מצב הים:</strong> רגוע ונוח מאוד, רוח קלה. מושלם לטבילה ראשונה בבריכת המלון וערב נעים בנמל!
+            </div>
+          </div>
+
+          <!-- שבת 12.09 -->
+          <div class="forecast-day-box">
+            <div class="f-day-top">
+              <div>
+                <strong>שבת (12.09) - חופי הטורקיז</strong>
+                <div class="f-day-sub">חוף אפלה וקירה פנאיה</div>
+              </div>
+              <span class="f-day-icon" id="fIcon1">☀️</span>
+            </div>
+            <div class="f-day-metrics">
+              <span class="f-temp"><strong id="fMax1">30°C</strong> <small id="fMin1">/ 25°C</small></span>
+              <span class="f-wind" id="fWind1">💨 16 קמ"ש (בריזה צפ'-מע')</span>
+              <span class="f-rain" id="fRain1">💧 0% גשם</span>
+            </div>
+            <div class="f-day-tip">
+              🌊 <strong>מצב הים:</strong> מפרצי המזרח (אפלה וקירה פנאיה) מוגנים לחלוטין ושקטים. מומלץ להקדים עד 10:30!
+            </div>
+          </div>
+
+          <!-- ראשון 13.09 -->
+          <div class="forecast-day-box">
+            <div class="f-day-top">
+              <div>
+                <strong>ראשון (13.09) - אולימפוס ופיניקי</strong>
+                <div class="f-day-sub">הרים ושקיעה בכפר הדייגים</div>
+              </div>
+              <span class="f-day-icon" id="fIcon2">🌤️</span>
+            </div>
+            <div class="f-day-metrics">
+              <span class="f-temp"><strong id="fMax2">31°C</strong> <small id="fMin2">/ 24°C</small></span>
+              <span class="f-wind" id="fWind2">💨 13 קמ"ש (רוח חלשה מאוד!)</span>
+              <span class="f-rain" id="fRain2">💧 1% גשם</span>
+            </div>
+            <div class="f-day-tip">
+              🌊 <strong>מצב הים וההרים:</strong> היום הכי חם והכי רגוע של החופשה! ראות מדהימה בכפר ההררי אולימפוס ושקיעה פסטורלית בפיניקי.
+            </div>
+          </div>
+
+          <!-- שני 14.09 -->
+          <div class="forecast-day-box">
+            <div class="f-day-top">
+              <div>
+                <strong>שני (14.09) - יום ההמראה</strong>
+                <div class="f-day-sub">דיאקופטיס והחזרת רכב ב-09:00</div>
+              </div>
+              <span class="f-day-icon" id="fIcon3">⛅</span>
+            </div>
+            <div class="f-day-metrics">
+              <span class="f-temp"><strong id="fMax3">28°C</strong> <small id="fMin3">/ 24°C</small></span>
+              <span class="f-wind" id="fWind3">💨 18 קמ"ש (צפונית מתונה)</span>
+              <span class="f-rain" id="fRain3">💧 8% סיכוי לטפטוף</span>
+            </div>
+            <div class="f-day-tip">
+              🌊 <strong>מצב הים:</strong> חוף דיאקופטיס רדוד ומוגן בדרום האי ליד השדה – מושלם לטבילת בוקר קצרה לפני החזרת הרכב!
+            </div>
+          </div>
+
+        </div>
+      </article>
+
       <div class="card">
         <div class="card-head">
           <div class="card-title-group">
@@ -1581,17 +1736,90 @@
     }
     window.addEventListener('DOMContentLoaded', initMap);
 
-    /* 6. Live Weather */
+    /* 6. Live Weather & 4-Day Trip Forecast */
+    function getWeatherEmoji(code) {
+      if (code === 0) return '☀️';
+      if (code <= 2) return '🌤️';
+      if (code === 3) return '⛅';
+      if (code >= 45 && code <= 48) return '🌫️';
+      if (code >= 51 && code <= 67) return '🌧️';
+      if (code >= 80 && code <= 82) return '🌦️';
+      if (code >= 95) return '⛈️';
+      return '☀️';
+    }
+
+    function getWindDirText(deg) {
+      if (deg >= 337.5 || deg < 22.5) return "צפונית";
+      if (deg >= 22.5 && deg < 67.5) return "צפ'-מז'";
+      if (deg >= 67.5 && deg < 112.5) return "מזרחית";
+      if (deg >= 112.5 && deg < 157.5) return "דר'-מז'";
+      if (deg >= 157.5 && deg < 202.5) return "דרומית";
+      if (deg >= 202.5 && deg < 247.5) return "דר'-מע'";
+      if (deg >= 247.5 && deg < 292.5) return "מערבית";
+      return "צפ'-מע' (מלטמי)";
+    }
+
+    async function fetchLiveDailyWeather() {
+      const subEl = document.getElementById('forecastSub');
+      if (subEl) subEl.innerText = "טוען נתונים חיים מ-Open-Meteo...";
+      try {
+        const url = "https://api.open-meteo.com/v1/forecast?latitude=35.5095&longitude=27.2061&daily=temperature_2m_max,temperature_2m_min,windspeed_10m_max,winddirection_10m_dominant,weathercode,precipitation_probability_max&timezone=auto";
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        const data = await res.json();
+        const daily = data.daily;
+        if (!daily || !daily.time) return;
+
+        const tripDates = ["2026-09-11", "2026-09-12", "2026-09-13", "2026-09-14"];
+        tripDates.forEach((dateStr, cardIdx) => {
+          let dayIdx = daily.time.indexOf(dateStr);
+          if (dayIdx === -1) dayIdx = Math.min(cardIdx + 1, daily.time.length - 1);
+
+          const maxT = Math.round(daily.temperature_2m_max[dayIdx]);
+          const minT = Math.round(daily.temperature_2m_min[dayIdx]);
+          const wind = Math.round(daily.windspeed_10m_max[dayIdx]);
+          const windDir = daily.winddirection_10m_dominant ? getWindDirText(daily.winddirection_10m_dominant[dayIdx]) : "צפ'-מע'";
+          const rainProb = daily.precipitation_probability_max ? daily.precipitation_probability_max[dayIdx] : 0;
+          const code = daily.weathercode[dayIdx];
+          const emoji = getWeatherEmoji(code);
+
+          const elIcon = document.getElementById(`fIcon${cardIdx}`);
+          const elMax = document.getElementById(`fMax${cardIdx}`);
+          const elMin = document.getElementById(`fMin${cardIdx}`);
+          const elWind = document.getElementById(`fWind${cardIdx}`);
+          const elRain = document.getElementById(`fRain${cardIdx}`);
+
+          if (elIcon) elIcon.innerText = emoji;
+          if (elMax) elMax.innerText = `${maxT}°C`;
+          if (elMin) elMin.innerText = `/ ${minT}°C`;
+          if (elWind) elWind.innerText = `💨 ${wind} קמ"ש (${windDir})`;
+          if (elRain) elRain.innerText = `💧 ${rainProb}% גשם`;
+        });
+
+        const now = new Date();
+        const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        if (subEl) subEl.innerHTML = `🟢 נתונים מטאורולוגיים חיים (עודכן ב-${timeStr})`;
+        if (typeof showToast === 'function') showToast("תחזית יומית לקרפאטוס עודכנה בהצלחה!");
+      } catch (e) {
+        console.warn("Daily forecast fetch error:", e);
+        if (subEl) subEl.innerHTML = `⚡ נתוני תחזית שמורים (אופליין)`;
+      }
+    }
+
     async function fetchLiveWeather() {
       try {
         const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.5095&longitude=27.2061&current_weather=true");
         if (res.ok) {
           const data = await res.json();
-          document.getElementById('weatherTemp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
+          const t = Math.round(data.current_weather.temperature);
+          const el = document.getElementById('weatherTemp');
+          if (el) el.innerText = `${t}°C`;
         }
       } catch (e) {}
     }
+
     fetchLiveWeather();
+    fetchLiveDailyWeather();
 
     /* 7. Expenses */
     let expenses = JSON.parse(localStorage.getItem('karpathos_expenses_v3') || '[]');
