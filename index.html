@@ -758,8 +758,8 @@
 
     <!-- Highlights Ticker -->
     <div class="quick-stats-bar">
+      <div class="stat-pill">🚗 רכב: <strong>Budget קליאו (שולם)</strong></div>
       <div class="stat-pill">💶 שער יורו חי: <strong id="headerEurRate">3.50 ₪</strong></div>
-      <div class="stat-pill">🚕 מונית שדה-מלון: <strong>~25-30 €</strong></div>
       <div class="stat-pill">🏨 יתרה למלון: <strong>822 €</strong></div>
       <div class="stat-pill">🌊 טמפ' מים: <strong>~25°C נעים</strong></div>
     </div>
@@ -819,7 +819,67 @@
         </div>
       </article>
 
-      <!-- מסלול נסיעה והגעה מהשדה למלון -->
+      <!-- הזמנת רכב שכור - Budget (מאושר ומשולם) -->
+      <article class="card" style="border-right: 4px solid var(--success);">
+        <div class="card-head">
+          <div class="card-title-group">
+            <h2 class="card-title">🚗 רכב שכור - Budget (מאושר ומשולם)</h2>
+            <span class="card-subtitle">Renault Clio או דומה • אוטומטי • ממוזג • 5 מושבים</span>
+          </div>
+          <span class="badge badge-kids">שולם: 645 ₪</span>
+        </div>
+
+        <div class="data-row">
+          <span>חברת השכרה:</span>
+          <strong>Budget Rent a Car (דלפק בשדה AOK)</strong>
+        </div>
+        <div class="data-row">
+          <span>נהג ראשי:</span>
+          <strong>Aviv Soceanu</strong>
+        </div>
+        <div class="data-row">
+          <span>טלפון נהג:</span>
+          <span class="copy-chip" onclick="copyText('0508281134')">050-8281134 📋</span>
+        </div>
+        <div class="data-row">
+          <span>איסוף (Pick-up):</span>
+          <strong style="color:var(--primary);">שישי 11.09.2026 שעה 09:00 (שדה AOK)</strong>
+        </div>
+        <div class="data-row">
+          <span>החזרה (Drop-off):</span>
+          <strong style="color:var(--primary);">שני 14.09.2026 שעה 09:00 (שדה AOK)</strong>
+        </div>
+        <div class="data-row">
+          <span>סטטוס תשלום:</span>
+          <strong style="color:var(--success);">שולם במלואו דרך Booking (645 ₪)</strong>
+        </div>
+
+        <!-- מה צריך להציג בדלפק -->
+        <div style="margin-top:10px; padding:10px; background:var(--card-hover); border-radius:10px; font-size:12px; line-height:1.5;">
+          <strong>📋 צ'ק-ליסט חובה להצגה בדלפק Budget:</strong><br>
+          ✓ שובר הזמנה (קישור למטה או מודפס)<br>
+          ✓ רישיון נהיגה בתוקף של אביב<br>
+          ✓ דרכון / תעודת זהות<br>
+          ✓ כרטיס אשראי בינלאומי ע"ש הנהג הראשי (Aviv Soceanu) עבור פיקדון
+        </div>
+
+        <div class="btn-row" style="flex-wrap:wrap;">
+          <a class="btn btn-primary" target="_blank" href="https://cars.booking.com/voucher/QQTa7qj0btlqvxV6jV3caVpgcI-jaI6ZFfVFoAZ5DmQtnjUlvCyKHx_S6IL8Qjux_H9RO-fGNoTopRlWb5xy8ZR6omGBqGGBu6WhTVDlYcsUMumfN8lARxMvDpBKgM0vagvfAnU_nn2002BavID8Yg?adcamp=bookingcom-PBBC+-2026-09-07&preflang=EN&mailType=2008&adco=0&envelopeId=50c35d4e-9f07-4048-9f85-6b3175a7326f&cor=IL&adplat=email&prefcurrency=ILS&mailTypeName=PBBC+&aid=2336990&affiliateCode=booking-cars&">
+            📄 שובר דיגיטלי
+          </a>
+          <a class="btn btn-booking" target="_blank" href="https://cars.booking.com/my-booking/QQTa7qj0btlqvxV6jV3caVpgcI-jaI6ZFfVFoAZ5DmQtnjUlvCyKHx_S6IL8Qjux_H9RO-fGNoTopRlWb5xy8ZR6omGBqGGBu6WhTVDlYcsUMumfN8lARxMvDpBKgM0vagvfAnU_nn2002BavID8Yg?adcamp=bookingcom-PBBC+-2026-09-07&preflang=EN&mailType=2008&adco=0&envelopeId=50c35d4e-9f07-4048-9f85-6b3175a7326f&cor=IL&adplat=email&prefcurrency=ILS&mailTypeName=PBBC+&aid=2336990&affiliateCode=booking-cars">
+            ⚙️ ניהול ב-Booking
+          </a>
+        </div>
+        <div class="btn-row" style="margin-top:6px;">
+          <a class="btn btn-outline" href="tel:+302245091323">
+            📞 סניף Budget: 302245091323+
+          </a>
+          <a class="btn btn-outline" href="tel:033722089">
+            📞 שירות לקוחות: 03-3722089
+          </a>
+        </div>
+      </article>
       <article class="card" style="border-right: 4px solid var(--primary);">
         <div class="card-head">
           <div class="card-title-group">
@@ -890,7 +950,8 @@
         </div>
         <div style="font-size:13px; line-height:1.6; color:var(--text-muted);">
           • <strong>07:20:</strong> המראה מנתב"ג בטיסת ארקיע IZ 141.<br>
-          • <strong>08:55:</strong> נחיתה בקרפאטוס (AOK), איסוף מזוודות וקבלת הרכב השכור.<br>
+          • <strong>08:55:</strong> נחיתה בקרפאטוס (AOK) ואיסוף כבודה.<br>
+          • <strong>09:00:</strong> איסוף רכב Renault Clio אוטומטי בדלפק Budget בשדה.<br>
           • <strong>10:30:</strong> הגעה לפיגאדיה – קפה ומאפה בנמל מול סירות הדייגים.<br>
           • <strong>14:00:</strong> צ'ק-אין במלון Alimounda Mare, התארגנות בחדר ורחצה בבריכה.<br>
           • <strong>19:30:</strong> ארוחת ערב פתיחה מעולה בטברנת <em>To Helleniko</em>.
@@ -1072,7 +1133,11 @@
         <div class="day-content">
           <div class="itinerary-step">
             <div class="itinerary-time">08:55</div>
-            <div><strong>נחיתה בקרפאטוס (AOK)</strong> - איסוף רכב שכור ונסיעה של 20 דק' לפיגאדיה.</div>
+            <div><strong>נחיתה בקרפאטוס (AOK)</strong> - איסוף כבודה מהמסוע.</div>
+          </div>
+          <div class="itinerary-step">
+            <div class="itinerary-time">09:00</div>
+            <div><strong>איסוף רכב Renault Clio בדלפק Budget</strong> בשדה התעופה ויציאה צפונה לפיגאדיה (20 דק' נסיעה).</div>
           </div>
           <div class="itinerary-step">
             <div class="itinerary-time">10:30</div>
@@ -1160,8 +1225,8 @@
             <div><strong>טבילת בוקר בדיאקופטיס</strong> - חול לבן 5 דקות משדה התעופה.</div>
           </div>
           <div class="itinerary-step">
-            <div class="itinerary-time">09:30</div>
-            <div><strong>החזרת רכב שכור בשדה AOK</strong> וצ'ק-אין לטיסת ארקיע IZ 142.</div>
+            <div class="itinerary-time">09:00</div>
+            <div><strong>החזרת רכב לדלפק Budget בשדה AOK</strong> - בידוק בטחוני וצ'ק-אין לטיסת ארקיע IZ 142 (המראה ב-11:00).</div>
           </div>
         </div>
       </div>
